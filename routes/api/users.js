@@ -36,7 +36,12 @@ router.post("/verify", validateBody(schema.reVerifShema), reVerification);
 
 router.get("/info", isValidToken, getUserInfo);
 
-router.put("/info", isValidToken, editUserInfo);
+router.put(
+  "/info",
+  isValidToken,
+  validateBody(schema.editUserInfo),
+  editUserInfo
+);
 
 // router.patch(
 //   "/",

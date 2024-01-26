@@ -177,20 +177,22 @@ const getUserInfo = async (req, res) => {
 // ==================================================================================================
 const editUserInfo = async (req, res) => {
   const keys = Object.keys(req.body);
-  const newUserInfo = req.body;
+  console.log(await bcrypt.hash(req.body.password, 10));
   if (keys.length === 0) {
     throw HttpError(400);
   }
-  if (keys.includes("password")) {
-    if (!(await bcrypt.compare(req.body.password, req.user.password))) {
-      throw HttpError(401, "Current password is wrong");
-    }
+  if (!(await bcrypt.compare(req.body.password, req.user.password))) {
+    throw HttpError(401, "Inalide password");
+  }
+  const newUserInfo = req.body;
+  delete newUserInfo.password;
+  if (keys.includes("newPassword")) {
     const hashPassword = await bcrypt.hash(req.body.newPassword, 10);
     newUserInfo.password = hashPassword;
   }
   const { _id } = req.user;
   await User.findByIdAndUpdate(_id, { ...newUserInfo });
-  res.status(200).json({ message: "Verification email sent" });
+  res.status(200).json({ message: "Changes have been made" });
 };
 
 module.exports = {
@@ -202,6 +204,6 @@ module.exports = {
   verification,
   reVerification,
   getUserInfo,
-  editUserInfo,
+  editUserInfo: ctrlWrapper(editUserInfo),
 };
 //
