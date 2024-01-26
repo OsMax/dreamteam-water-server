@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const gravatar = require("gravatar");
+// const gravatar = require("gravatar");
 const Jimp = require("jimp");
 const fs = require("fs/promises");
 const path = require("path");
@@ -24,14 +24,14 @@ const register = async (req, res, next) => {
 
   const hashPassword = await bcrypt.hash(password, 10);
 
-  // const avatarURL = path.join("avatars", "avatarDefault.png");
-  const avatarURL = gravatar.url(email);
+  const avatarURL = path.join("avatars", "avatarDefault.png");
+  // const avatarURL = gravatar.url(email);
 
   const verificationToken = nanoid();
 
   const emailToVetification = emailLetter(email, verificationToken);
 
-  await emailSend(emailToVetification);
+  // await emailSend(emailToVetification);
 
   const newUser = await User.create({
     ...req.body,
@@ -41,8 +41,8 @@ const register = async (req, res, next) => {
   });
   res.status(201).json({
     user: {
+      id: newUser.id,
       email: newUser.email,
-      subscription: newUser.subscription,
     },
   });
 };
@@ -58,7 +58,7 @@ const login = async (req, res, next) => {
   if (!user.verify) {
     throw HttpError(401, "Need to email verification");
   }
-  const { id, subscription } = user;
+  const { id } = user;
 
   const token = jwt.sign({ id }, SECRET_KEY, { expiresIn: "3d" });
 
@@ -68,7 +68,6 @@ const login = async (req, res, next) => {
     token,
     user: {
       email,
-      subscription,
     },
   });
 };
@@ -84,27 +83,27 @@ const logout = async (req, res) => {
 // CURRENT_USER
 // ================================================================================================
 const getCurrent = async (req, res) => {
-  const { email, subscription } = req.user;
-  res.json({ email, subscription });
+  const { _id, email } = req.user;
+  res.json({ _id, email });
 };
 
-// SUBSCRIPTION
-// ================================================================================================
-const changeSubscription = async (req, res) => {
-  if (Object.keys(req.body).length === 0) {
-    throw HttpError(400);
-  }
-  const { email } = req.user;
-  const { subscription } = req.body;
+// // SUBSCRIPTION
+// // ================================================================================================
+// const changeSubscription = async (req, res) => {
+//   if (Object.keys(req.body).length === 0) {
+//     throw HttpError(400);
+//   }
+//   const { email } = req.user;
+//   const { subscription } = req.body;
 
-  const result = await User.findByIdAndUpdate(email, req.body, {
-    new: true,
-  });
-  if (!result) {
-    throw HttpError(404);
-  }
-  res.status(200).json({ email, subscription });
-};
+//   const result = await User.findByIdAndUpdate(email, req.body, {
+//     new: true,
+//   });
+//   if (!result) {
+//     throw HttpError(404);
+//   }
+//   res.status(200).json({ email, subscription });
+// };
 
 // AVATAR
 // ================================================================================================
@@ -167,14 +166,42 @@ const reVerification = async (req, res) => {
   res.status(200).json({ message: "Verification email sent" });
 };
 
+// GET_INFORMATION
+// ==================================================================================================
+const getUserInfo = async (req, res) => {
+  const { _id, email, name, gender } = req.user;
+  res.status(200).json({ _id, email, name, gender });
+};
+
+// EDIT_INFORMATION
+// ==================================================================================================
+const editUserInfo = async (req, res) => {
+  const keys = Object.keys(req.body);
+  const newUserInfo = req.body;
+  if (keys.length === 0) {
+    throw HttpError(400);
+  }
+  if (keys.includes("password")) {
+    if (!(await bcrypt.compare(req.body.password, req.user.password))) {
+      throw HttpError(401, "Current password is wrong");
+    }
+    const hashPassword = await bcrypt.hash(req.body.newPassword, 10);
+    newUserInfo.password = hashPassword;
+  }
+  const { _id } = req.user;
+  await User.findByIdAndUpdate(_id, { ...newUserInfo });
+  res.status(200).json({ message: "Verification email sent" });
+};
+
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
   getCurrent,
   logout,
-  changeSubscription: ctrlWrapper(changeSubscription),
   changeAvatar: ctrlWrapper(changeAvatar),
   verification,
   reVerification,
+  getUserInfo,
+  editUserInfo,
 };
 //
