@@ -4,26 +4,40 @@ const gravatar = require("gravatar");
 const Jimp = require("jimp");
 const fs = require("fs/promises");
 const path = require("path");
+const { nanoid } = require("nanoid");
 
 const { User } = require("../models/user");
 
-const { ctrlWrapper, HttpError } = require("../helpers");
+const {
+  ctrlWrapper,
+  HttpError,
+  emailSend,
+  emailLetter,
+} = require("../helpers");
 
 const { SECRET_KEY } = process.env;
 
 // REGISTER
+// ================================================================================================
 const register = async (req, res, next) => {
-  const { password } = req.body;
+  const { email, password } = req.body;
 
   const hashPassword = await bcrypt.hash(password, 10);
 
   // const avatarURL = path.join("avatars", "avatarDefault.png");
-  const avatarURL = gravatar.url(req.body.email);
+  const avatarURL = gravatar.url(email);
+
+  const verificationToken = nanoid();
+
+  const emailToVetification = emailLetter(email, verificationToken);
+
+  await emailSend(emailToVetification);
 
   const newUser = await User.create({
     ...req.body,
     password: hashPassword,
     avatarURL,
+    verificationToken,
   });
   res.status(201).json({
     user: {
@@ -34,11 +48,15 @@ const register = async (req, res, next) => {
 };
 
 // LOGIN
+// ================================================================================================
 const login = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user || !(await bcrypt.compare(password, user.password))) {
     throw HttpError(401, "Email or password is wrong");
+  }
+  if (!user.verify) {
+    throw HttpError(401, "Need to email verification");
   }
   const { id, subscription } = user;
 
@@ -56,6 +74,7 @@ const login = async (req, res, next) => {
 };
 
 // LOGOUT
+// ================================================================================================
 const logout = async (req, res) => {
   const { id } = req.user;
   await User.findByIdAndUpdate(id, { token: "" });
@@ -63,12 +82,14 @@ const logout = async (req, res) => {
 };
 
 // CURRENT_USER
+// ================================================================================================
 const getCurrent = async (req, res) => {
   const { email, subscription } = req.user;
   res.json({ email, subscription });
 };
 
 // SUBSCRIPTION
+// ================================================================================================
 const changeSubscription = async (req, res) => {
   if (Object.keys(req.body).length === 0) {
     throw HttpError(400);
@@ -86,6 +107,7 @@ const changeSubscription = async (req, res) => {
 };
 
 // AVATAR
+// ================================================================================================
 const avatarDir = path.join(__dirname, "..", "public", "avatars");
 
 const changeAvatar = async (req, res) => {
@@ -109,6 +131,42 @@ const changeAvatar = async (req, res) => {
   res.json({ avatarURL });
 };
 
+// VERIFICATION
+// ================================================================================================
+const verification = async (req, res) => {
+  const { verificationToken } = req.params;
+  const user = await User.findOne({ verificationToken });
+  if (!user) {
+    throw HttpError(404, "User not found");
+  }
+
+  await User.findByIdAndUpdate(user.id, {
+    verify: true,
+    verificationToken: null,
+  });
+
+  res.status(200).json({
+    message: "Verification successful",
+  });
+};
+
+// REVERIFICATION
+// ================================================================================================
+const reVerification = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw HttpError(404, "User not found");
+  }
+  if (user.verify) {
+    throw HttpError(400, "Verification has already been passed");
+  }
+  const emailToVetification = emailLetter(email, user.verificationToken);
+  await emailSend(emailToVetification);
+
+  res.status(200).json({ message: "Verification email sent" });
+};
+
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
@@ -116,5 +174,7 @@ module.exports = {
   logout,
   changeSubscription: ctrlWrapper(changeSubscription),
   changeAvatar: ctrlWrapper(changeAvatar),
+  verification,
+  reVerification,
 };
 //

@@ -7,6 +7,8 @@ const {
   getCurrent,
   changeSubscription,
   changeAvatar,
+  verification,
+  reVerification,
 } = require("../../controllers/users");
 
 const { validateBody } = require("../../middlewares/validateBody");
@@ -26,6 +28,9 @@ router.post("/logout", isValidToken, logout);
 router.get("/current", isValidToken, getCurrent);
 
 router.patch("/avatars", isValidToken, upload.single("avatar"), changeAvatar);
+
+router.get("/verify/:verificationToken", verification);
+router.post("/verify", validateBody(schema.reVerifShema), reVerification);
 
 router.patch(
   "/",
