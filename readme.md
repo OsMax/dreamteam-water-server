@@ -8,10 +8,8 @@
 
 
 ## USER
-    POST: [https://dreamteam-water-server.onrender.com/api/user/register](https://dreamteam-water-server.onrender.com/api/user/register)
+POST: [https://dreamteam-water-server.onrender.com/api/user/register](https://dreamteam-water-server.onrender.com/api/user/register)
       Запит на регістрацію користувача - очікує { email, password }
-
-
 
 POST: [https://dreamteam-water-server.onrender.com/api/user/login](https://dreamteam-water-server.onrender.com/api/user/login)
       Запит на логінізацію користувача - очікує { email, password }
