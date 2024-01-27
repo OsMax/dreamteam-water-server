@@ -31,7 +31,7 @@ const register = async (req, res, next) => {
 
   const emailToVetification = emailLetter(email, verificationToken);
 
-  // await emailSend(emailToVetification);
+  await emailSend(emailToVetification);
 
   const newUser = await User.create({
     ...req.body,
