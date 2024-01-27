@@ -8,33 +8,42 @@
 
 
 ## USER
-POST: [https://dreamteam-water-server.onrender.com/api/user/register](https://dreamteam-water-server.onrender.com/api/user/register)
 Запит на регістрацію користувача - очікує { email, password }
 
-POST: [https://dreamteam-water-server.onrender.com/api/user/login](https://dreamteam-water-server.onrender.com/api/user/login)
-      Запит на логінізацію користувача - очікує { email, password }
+      POST: https://dreamteam-water-server.onrender.com/api/user/register
 
-POST: [https://dreamteam-water-server.onrender.com/api/user/logout](https://dreamteam-water-server.onrender.com/api/user/logout)
-      Вихід
+Запит на логінізацію користувача - очікує { email, password }
 
-GET:  [https://dreamteam-water-server.onrender.com/api/user/current](https://dreamteam-water-server.onrender.com/api/user/current)
-      Отримання користувача за токеном
+      POST: https://dreamteam-water-server.onrender.com/api/user/login
 
-PATCH: [https://dreamteam-water-server.onrender.com/api/user/avatars](https://dreamteam-water-server.onrender.com/api/user/avatars)
-       Зміна аватарки - очікує { file }
+Вихід 
 
-GET:  [https://dreamteam-water-server.onrender.com/api/user/verify/:verificationToken](https://dreamteam-water-server.onrender.com/api/user/verify/:verificationToken)
-      Верифікація пошти
+      POST: https://dreamteam-water-server.onrender.com/api/user/logout
 
-POST: [https://dreamteam-water-server.onrender.com/api/user/verify](https://dreamteam-water-server.onrender.com/api/user/verify)
-      Реверифікація - очікує { email }
+Отримання користувача за токеном
 
-GET:  [https://dreamteam-water-server.onrender.com/api/user/info](https://dreamteam-water-server.onrender.com/api/user/info)
-      Повертає інформацію поточного користувача
+      GET:  https://dreamteam-water-server.onrender.com/api/user/current
 
-PUT:  [https://dreamteam-water-server.onrender.com/api/user/info](https://dreamteam-water-server.onrender.com/api/user/info)
-      Редагування інформації про користувача - очікує {name, email, gender, password}, 
+Зміна аватарки - очікує { file }
+
+       PATCH: https://dreamteam-water-server.onrender.com/api/user/avatars
+
+Верифікація пошти
+
+      GET:  https://dreamteam-water-server.onrender.com/api/user/verify/:verificationToken
+
+Реверифікація - очікує { email }
+
+      POST: https://dreamteam-water-server.onrender.com/api/user/verify
+
+Повертає інформацію поточного користувача
+
+      GET:  https://dreamteam-water-server.onrender.com/api/user/info
+
+Редагування інформації про користувача - очікує {name, email, gender, password}, 
                                                   або {name, email, gender, password, newPassword}
+
+      PUT:  https://dreamteam-water-server.onrender.com/api/user/info
 
 
 
