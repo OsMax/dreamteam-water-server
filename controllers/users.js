@@ -169,6 +169,7 @@ const reVerification = async (req, res) => {
 // GET_INFORMATION
 // ==================================================================================================
 const getUserInfo = async (req, res) => {
+  console.log(req.user);
   const { _id, email, name, gender } = req.user;
   res.status(200).json({ _id, email, name, gender });
 };
