@@ -43,11 +43,4 @@ router.put(
   editUserInfo
 );
 
-// router.patch(
-//   "/",
-//   isValidToken,
-//   validateBody(schema.subscriptionSchema),
-//   changeSubscription
-// );
-
 module.exports = router;

@@ -25,6 +25,10 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    norm: {
+      type: String,
+      default: "2000",
+    },
     token: String,
     avatarURL: {
       type: String,

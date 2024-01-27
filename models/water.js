@@ -10,7 +10,7 @@ const waterSchema = new Schema(
       month: { type: String },
       day: { type: String },
     },
-    norm: { type: String, default: "1500" },
+    norm: { type: String },
     drinks: [
       {
         ml: { type: String },

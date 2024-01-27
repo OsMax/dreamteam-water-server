@@ -83,27 +83,9 @@ const logout = async (req, res) => {
 // CURRENT_USER
 // ================================================================================================
 const getCurrent = async (req, res) => {
-  const { _id, email } = req.user;
-  res.json({ _id, email });
+  const { _id, email, name } = req.user;
+  res.json({ _id, email, name });
 };
-
-// // SUBSCRIPTION
-// // ================================================================================================
-// const changeSubscription = async (req, res) => {
-//   if (Object.keys(req.body).length === 0) {
-//     throw HttpError(400);
-//   }
-//   const { email } = req.user;
-//   const { subscription } = req.body;
-
-//   const result = await User.findByIdAndUpdate(email, req.body, {
-//     new: true,
-//   });
-//   if (!result) {
-//     throw HttpError(404);
-//   }
-//   res.status(200).json({ email, subscription });
-// };
 
 // AVATAR
 // ================================================================================================
@@ -178,7 +160,6 @@ const getUserInfo = async (req, res) => {
 // ==================================================================================================
 const editUserInfo = async (req, res) => {
   const keys = Object.keys(req.body);
-  console.log(await bcrypt.hash(req.body.password, 10));
   if (keys.length === 0) {
     throw HttpError(400);
   }
