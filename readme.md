@@ -40,10 +40,14 @@
 
       GET:  https://dreamteam-water-server.onrender.com/api/users/info
 
-Редагування інформації про користувача - очікує {name, email, gender, password}, 
-                                                  або {name, email, gender, password, newPassword}
+Редагування інформації про користувача - очікує { name, email, gender, password }, 
+                                                  або { name, email, gender, password, newPassword }
 
       PUT:  https://dreamteam-water-server.onrender.com/api/users/info
+
+Редагування норми - очікує { norm }
+
+      PATCH:  https://dreamteam-water-server.onrender.com/api/users/norm
 
 
 
