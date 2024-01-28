@@ -25,7 +25,7 @@
 
       GET:  https://dreamteam-water-server.onrender.com/api/users/current
 
-Зміна аватарки - очікує { file }
+Зміна аватарки - очікує { avatar }
 
        PATCH: https://dreamteam-water-server.onrender.com/api/users/avatars
 
