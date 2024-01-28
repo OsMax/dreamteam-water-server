@@ -22,6 +22,7 @@ const addDrink = async (req, res) => {
   const { _id } = req.user;
   const { drink } = req.body;
   const { year, month, day } = req.body.date;
+  console.log(drink);
   let result = await Water.findOneAndUpdate(
     {
       owner: _id,
