@@ -34,12 +34,13 @@ const addDrink = async (req, res) => {
       new: true,
     }
   );
-  const percent =
+  const percent = Math.round(
     (result.drinks.reduce(function (p, c) {
       return p + c.ml;
     }, 0) /
       result.norm) *
-    100;
+      100
+  );
   result = await Water.findByIdAndUpdate(
     result._id,
     { percent: percent },
@@ -58,9 +59,13 @@ const getMonth = async (req, res) => {
 
   const result = await Water.find({
     owner: _id,
-    "date.year": `${year}`,
+    "date.year": year,
     "date.month": `${month}`,
   });
+
+  // const result = temp.map((e) => {
+  //   return { date: e.date, percent: e.percent };
+  // });
 
   res.status(200).json(result);
 };
@@ -71,8 +76,20 @@ const editUserNorm = async (req, res) => {
   const { date } = req.body;
   const { _id } = req.user;
   const { norm } = req.body;
+
+  const result = Water.findOne({ date, owner: _id });
+
+  const percent = Math.round(
+    (result.drinks.reduce(function (p, c) {
+      return p + c.ml;
+    }, 0) /
+      result.norm) *
+      100
+  );
+
   await User.findByIdAndUpdate(_id, { ...norm });
-  await Water.findOneAndUpdate({ date, owner: _id }, { norm });
+  await Water.findOneAndUpdate({ date, owner: _id }, { norm, percent });
+
   res.status(200).json({ norm });
 };
 
