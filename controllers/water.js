@@ -9,6 +9,7 @@ const currentDay = async (req, res) => {
   const { _id } = req.user;
   console.log("!!!!!");
   console.log(req);
+  console.log(_id);
   // const { year, month, day } = req.body.date;
   // const { norm } = req.user;
   // let result = await Water.findOne({
