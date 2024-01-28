@@ -8,6 +8,7 @@
 
 
 ## USER
+
 Запит на регістрацію користувача - очікує { email, password }
 
       POST: https://dreamteam-water-server.onrender.com/api/users/register
@@ -48,6 +49,7 @@
 Редагування норми - очікує { norm }
 
       PATCH:  https://dreamteam-water-server.onrender.com/api/users/norm
+
 
 
 ## WATER
