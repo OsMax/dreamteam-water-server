@@ -6,14 +6,15 @@ const MongooseError = require("../helpers/MongoosError");
 const waterSchema = new Schema(
   {
     date: {
-      year: { type: String },
+      year: { type: Number },
       month: { type: String },
-      day: { type: String },
+      day: { type: Number },
     },
-    norm: { type: String },
+    norm: { type: Number },
+    percent: { type: Number, default: 0 },
     drinks: [
       {
-        ml: { type: String },
+        ml: { type: Number },
         time: { type: String },
       },
     ],
