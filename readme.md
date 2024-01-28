@@ -50,5 +50,32 @@
       PATCH:  https://dreamteam-water-server.onrender.com/api/users/norm
 
 
-
 ## WATER
+
+Запит поточного дня - очікує { date:{ year: Number, month: String, day: Number } }
+
+      GET: https://dreamteam-water-server.onrender.com/api/water
+
+Запит додавання випитого - очікує { date:{ year: Number, month: String, day: Number }, drink:{ ml: Number, time: String } }
+
+      POST: https://dreamteam-water-server.onrender.com/api/water/drinks
+
+Запит редагування випитого - очікує { _dayId: String, _drinkId: String , drink:{ ml: Number, time: String } }
+
+      PATCH: https://dreamteam-water-server.onrender.com/api/water/drinks
+
+Запит видалення випитого - очікує { _dayId: String, _drinkId: String }
+
+      DELETE: https://dreamteam-water-server.onrender.com/api/water/drinks
+
+Запит отримання місяця - очікує { date:{ year: Number, month: String } }
+
+      GET: https://dreamteam-water-server.onrender.com/api/water/month
+
+Запит рудагування норми - очікує {  date:{ year: Number, month: String, day: Number }, norm: Number }
+
+      PATCH: https://dreamteam-water-server.onrender.com/api/water/norm
+
+Запит інформації за будь-який день - очікує {  date:{ year: Number, month: String, day: Number } }
+
+      GET: https://dreamteam-water-server.onrender.com/api/water/days
