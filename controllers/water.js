@@ -11,9 +11,9 @@ const currentDay = async (req, res) => {
   const { norm } = req.user;
   let result = await Water.findOne({
     owner: _id,
-    "date.year": `${year}`,
+    "date.year": year,
     "date.month": `${month}`,
-    "date.day": `${day}`,
+    "date.day": day,
   });
   if (!result) {
     result = await Water.create({
@@ -36,9 +36,9 @@ const addDrink = async (req, res) => {
   let result = await Water.findOneAndUpdate(
     {
       owner: _id,
-      "date.year": `${year}`,
+      "date.year": year,
       "date.month": `${month}`,
-      "date.day": `${day}`,
+      "date.day": day,
     },
     { $push: { drinks: drink } },
     {
