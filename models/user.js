@@ -19,15 +19,15 @@ const userSchema = new Schema(
     },
     name: {
       type: String,
-      default: "NoName",
+      default: "Noname",
     },
     gender: {
       type: Boolean,
       default: false,
     },
     norm: {
-      type: String,
-      default: "2000",
+      type: Number,
+      default: 2000,
     },
     token: String,
     avatarURL: {

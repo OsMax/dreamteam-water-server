@@ -14,11 +14,11 @@ const {
 const router = express.Router();
 
 router.get("/", isValidToken, currentDay);
-router.post("/drinks/", isValidToken, addDrink);
-router.patch("/drinks/", isValidToken, editDrink);
-router.delete("/drinks/", isValidToken, deleteDrink);
-router.get("/month/", isValidToken, getMonth);
-router.patch("/norm/", isValidToken, editUserNorm);
-router.get("/days/", isValidToken, getDayInfo);
+router.post("/drinks", isValidToken, addDrink);
+router.patch("/drinks", isValidToken, editDrink);
+router.delete("/drinks", isValidToken, deleteDrink);
+router.get("/month", isValidToken, getMonth);
+router.patch("/norm", isValidToken, editUserNorm);
+router.get("/days", isValidToken, getDayInfo);
 
 module.exports = router;
