@@ -25,7 +25,7 @@ const currentDay = async (req, res) => {
   //     owner: req.user.id,
   //   });
   // }
-  res.status(200).json({});
+  res.status(200).json({ message: "its working" });
 };
 
 // ADD NEW DRINK TO CURRENT DAY
