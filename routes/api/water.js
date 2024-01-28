@@ -13,7 +13,7 @@ const {
 
 const router = express.Router();
 
-router.get("/", isValidToken, currentDay);
+router.post("/", isValidToken, currentDay);
 router.post("/drinks", isValidToken, addDrink);
 router.patch("/drinks", isValidToken, editDrink);
 router.delete("/drinks", isValidToken, deleteDrink);
