@@ -7,7 +7,7 @@ const { User } = require("../models/user");
 // ========================================================================================
 const currentDay = async (req, res) => {
   const { _id } = req.user;
-
+  console.log("!!!!!");
   console.log(req.body);
   // const { year, month, day } = req.body.date;
   // const { norm } = req.user;
