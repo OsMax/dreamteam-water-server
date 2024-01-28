@@ -70,6 +70,7 @@ const login = async (req, res, next) => {
       email,
       name: user.name,
       avatar: user.avatarURL,
+      norm: user.norm,
     },
   });
 };
@@ -85,8 +86,8 @@ const logout = async (req, res) => {
 // CURRENT_USER
 // ================================================================================================
 const getCurrent = async (req, res) => {
-  const { _id, email, name, avatarURL } = req.user;
-  res.json({ _id, email, name, avatarURL });
+  const { _id, email, name, avatarURL, norm } = req.user;
+  res.json({ _id, email, name, avatarURL, norm });
 };
 
 // AVATAR

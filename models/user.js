@@ -19,7 +19,7 @@ const userSchema = new Schema(
     },
     name: {
       type: String,
-      default: "Noname",
+      default: "",
     },
     gender: {
       type: Boolean,
