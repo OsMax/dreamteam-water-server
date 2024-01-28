@@ -7,26 +7,25 @@ const { User } = require("../models/user");
 // ========================================================================================
 const currentDay = async (req, res) => {
   const { _id } = req.user;
+  const { year, month, day } = req.body.date;
   console.log("!!!!!");
-  console.log(req);
-  console.log(_id);
-  // const { year, month, day } = req.body.date;
-  // const { norm } = req.user;
-  // let result = await Water.findOne({
-  //   owner: _id,
-  //   "date.year": year,
-  //   "date.month": `${month}`,
-  //   "date.day": day,
-  // });
-  // if (!result) {
-  //   result = await Water.create({
-  //     date: req.body.date,
-  //     norm,
-  //     drinks: [],
-  //     owner: req.user.id,
-  //   });
-  // }
-  res.status(200).json({ message: "its working" });
+  console.log(req.body);
+  const { norm } = req.user;
+  let result = await Water.findOne({
+    owner: _id,
+    "date.year": year,
+    "date.month": `${month}`,
+    "date.day": day,
+  });
+  if (!result) {
+    result = await Water.create({
+      date: req.body.date,
+      norm,
+      drinks: [],
+      owner: req.user.id,
+    });
+  }
+  res.status(200).json(result);
 };
 
 // ADD NEW DRINK TO CURRENT DAY
