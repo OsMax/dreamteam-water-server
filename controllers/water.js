@@ -106,11 +106,11 @@ const editUserNorm = async (req, res) => {
 // EDIT DRINK
 // ====================================================================================================
 const editDrink = async (req, res) => {
-  const { _dayId, _drinkId, drink } = req.body;
+  const { drink } = req.body;
+  const id = req.params.drinkId;
   const result = await Water.findOneAndUpdate(
     {
-      _id: _dayId,
-      "drinks._id": _drinkId,
+      "drinks._id": id,
     },
     { $set: { "drinks.$": drink } },
     {
