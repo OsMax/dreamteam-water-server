@@ -8,8 +8,6 @@ const { User } = require("../models/user");
 const currentDay = async (req, res) => {
   const { _id } = req.user;
   const { year, month, day } = req.body.date;
-  console.log("!!!!!");
-  console.log(req.body);
   const { norm } = req.user;
   let result = await Water.findOne({
     owner: _id,
