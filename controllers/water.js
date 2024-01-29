@@ -107,6 +107,7 @@ const editUserNorm = async (req, res) => {
 const editDrink = async (req, res) => {
   const { drink } = req.body;
   const id = req.params.drinkId;
+  console.log(drink);
   const result = await Water.findOneAndUpdate(
     {
       "drinks._id": id,
