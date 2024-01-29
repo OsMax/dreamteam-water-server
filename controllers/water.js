@@ -83,14 +83,13 @@ const getMonth = async (req, res) => {
 // EDIT NORM
 // ====================================================================================================
 const editUserNorm = async (req, res) => {
-  const { date } = req.body;
+  const { date, norm } = req.body;
   const { _id } = req.user;
-  const { norm } = req.body;
 
   const result = Water.findOne({ date, owner: _id });
 
   const percent = Math.round(
-    (result.drinks.reduce(function (p, c) {
+    (result.drinks.reduce((p, c) => {
       return p + c.ml;
     }, 0) /
       result.norm) *

@@ -50,10 +50,6 @@ const register = async (req, res, next) => {
 // LOGIN
 // ================================================================================================
 const login = async (req, res, next) => {
-  //
-  console.log("!!!!!");
-  console.log(req.body);
-  //
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -159,7 +155,6 @@ const reVerification = async (req, res) => {
 // GET_INFORMATION
 // ==================================================================================================
 const getUserInfo = async (req, res) => {
-  console.log(req.user);
   const { _id, email, name, gender } = req.user;
   res.status(200).json({ _id, email, name, gender });
 };
