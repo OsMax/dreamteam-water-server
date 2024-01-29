@@ -62,7 +62,7 @@
 
       POST: https://dreamteam-water-server.onrender.com/api/water/drinks
 
-Запит редагування випитого
+Запит редагування випитого - очікує { drink:{ ml: Number, time: String } }
 
       PATCH: https://dreamteam-water-server.onrender.com/api/water/drinks/:drinkId
 
