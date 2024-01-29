@@ -68,7 +68,7 @@
 
 Запит видалення випитого - очікує { _dayId: String, _drinkId: String }
 
-      DELETE: https://dreamteam-water-server.onrender.com/api/water/drinks
+      PUT: https://dreamteam-water-server.onrender.com/api/water/drinks
 
 Запит отримання місяця - очікує { date:{ year: Number, month: String } }
 
