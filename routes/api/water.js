@@ -23,7 +23,7 @@ router.post(
   currentDay
 );
 router.post("/drinks", isValidToken, addDrink);
-router.patch("/drinks", isValidToken, editDrink);
+router.patch("/drinks/:drinkId", isValidToken, editDrink);
 router.delete("/drinks/:drinkId", isValidToken, deleteDrink);
 router.post(
   "/month",
