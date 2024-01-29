@@ -44,7 +44,7 @@
 Редагування інформації про користувача - очікує { name, email, gender, password }, 
                                                   або { name, email, gender, password, newPassword }
 
-      PUT:  https://dreamteam-water-server.onrender.com/api/users/info
+      PATCH:  https://dreamteam-water-server.onrender.com/api/users/info
 
 Редагування норми - очікує { norm }
 
@@ -56,7 +56,7 @@
 
 Запит поточного дня - очікує { date:{ year: Number, month: String, day: Number } }
 
-      GET: https://dreamteam-water-server.onrender.com/api/water
+      POST: https://dreamteam-water-server.onrender.com/api/water
 
 Запит додавання випитого - очікує { date:{ year: Number, month: String, day: Number }, drink:{ ml: Number, time: String } }
 
@@ -72,7 +72,7 @@
 
 Запит отримання місяця - очікує { date:{ year: Number, month: String } }
 
-      GET: https://dreamteam-water-server.onrender.com/api/water/month
+      POST: https://dreamteam-water-server.onrender.com/api/water/month
 
 Запит рудагування норми - очікує {  date:{ year: Number, month: String, day: Number }, norm: Number }
 
@@ -80,4 +80,4 @@
 
 Запит інформації за будь-який день - очікує {  date:{ year: Number, month: String, day: Number } }
 
-      GET: https://dreamteam-water-server.onrender.com/api/water/days
+      POST: https://dreamteam-water-server.onrender.com/api/water/days
