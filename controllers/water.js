@@ -123,12 +123,12 @@ const editDrink = async (req, res) => {
 // DELET DRINK
 // ====================================================================================================
 const deleteDrink = async (req, res) => {
-  const { _dayId, _drinkId } = req.body;
+  const id = req.params.drinkId;
   await Water.findOneAndUpdate(
     {
-      _id: _dayId,
+      "drinks._id": id,
     },
-    { $pull: { drinks: { _id: _drinkId } } }
+    { $pull: { drinks: { _id: id } } }
   );
   res.json({ message: "Drink has been delet" });
 };
