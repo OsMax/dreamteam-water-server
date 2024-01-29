@@ -62,13 +62,13 @@
 
       POST: https://dreamteam-water-server.onrender.com/api/water/drinks
 
-Запит редагування випитого - очікує { _dayId: String, _drinkId: String , drink:{ ml: Number, time: String } }
+Запит редагування випитого
 
-      PATCH: https://dreamteam-water-server.onrender.com/api/water/drinks
+      PATCH: https://dreamteam-water-server.onrender.com/api/water/drinks/:drinkId
 
-Запит видалення випитого - очікує { _dayId: String, _drinkId: String }
+Запит видалення випитого
 
-      PUT: https://dreamteam-water-server.onrender.com/api/water/drinks
+      DELETE: https://dreamteam-water-server.onrender.com/api/water/drinks/:drinkId
 
 Запит отримання місяця - очікує { date:{ year: Number, month: String } }
 
