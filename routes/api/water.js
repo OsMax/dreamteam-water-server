@@ -24,7 +24,7 @@ router.post(
 );
 router.post("/drinks", isValidToken, addDrink);
 router.patch("/drinks", isValidToken, editDrink);
-router.delete("/drinks", isValidToken, deleteDrink);
+router.put("/drinks", isValidToken, deleteDrink);
 router.post(
   "/month",
   isValidToken,

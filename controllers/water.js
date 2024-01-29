@@ -124,7 +124,7 @@ const editDrink = async (req, res) => {
 // ====================================================================================================
 const deleteDrink = async (req, res) => {
   const { _dayId, _drinkId } = req.body;
-  await Water.findOneAndDelete(
+  await Water.findOneAndUpdate(
     {
       _id: _dayId,
     },
