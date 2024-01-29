@@ -28,22 +28,31 @@ const waterSchema = new Schema(
 );
 
 // const addWaterSchema = Joi.object({
-//   ml: Joi.number().required(),
-//   time: Joi.string().required(),
+//   date: {
+//     year: Joi.number().required(),
+//     month: Joi.string().required(),
+//     day: Joi.number(),
+//   },
+//   drink: {
+//     ml: Joi.number().required(),
+//     time: Joi.string().required(),
+//   },
 // }).messages({ "any.required": "missing required {#key} field" });
 
-// const addDaySchema = Joi.object({
-//   date: Joi.date().required(),
-//   norm: Joi.number(),
-//   drinks: Joi.array().items(),
+// const getDateSchema = Joi.object({
+//   date: {
+//     year: Joi.number().required(),
+//     month: Joi.string().required(),
+//     day: Joi.number(),
+//   },
 // }).messages({
 //   "any.required": "missing required {#key} field",
 // });
 
-const schemas = {
-  // addWaterSchema,
-  // addDaySchema,
-};
+// const schemas = {
+//   addWaterSchema,
+//   getDateSchema,
+// };
 
 waterSchema.post("save", MongooseError);
 

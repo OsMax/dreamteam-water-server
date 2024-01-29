@@ -36,7 +36,7 @@ router.post("/verify", validateBody(schema.reVerifShema), reVerification);
 
 router.get("/info", isValidToken, getUserInfo);
 
-router.put(
+router.patch(
   "/info",
   isValidToken,
   validateBody(schema.editUserInfo),
