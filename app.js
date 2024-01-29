@@ -2,6 +2,9 @@ const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger");
+
 require("dotenv").config();
 
 const waterRouter = require("./routes/api/water");
@@ -18,6 +21,8 @@ app.use(express.static("public"));
 
 app.use("/api/water", waterRouter);
 app.use("/api/users", userRouter);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
