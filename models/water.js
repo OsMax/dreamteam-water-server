@@ -49,10 +49,10 @@ const waterSchema = new Schema(
 //   "any.required": "missing required {#key} field",
 // });
 
-// const schemas = {
-//   addWaterSchema,
-//   getDateSchema,
-// };
+const schemas = {
+  // addWaterSchema,
+  // getDateSchema,
+};
 
 waterSchema.post("save", MongooseError);
 
