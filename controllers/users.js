@@ -103,8 +103,9 @@ const changeAvatar = async (req, res) => {
 
   if (!req.file) throw HttpError(400);
 
-  const { path: tempUpload } = req.file;
-  const newFileName = `${_id}`;
+  const { path: tempUpload, originalname } = req.file;
+  const fileName = originalname.split(".");
+  const newFileName = `${_id}` + "." + `${fileName[1]}`;
   const resultUpload = path.join(avatarDir, newFileName);
 
   await Jimp.read(tempUpload).then((ava) =>
