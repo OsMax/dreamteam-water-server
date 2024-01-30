@@ -46,10 +46,6 @@
 
       PATCH:  https://dreamteam-water-server.onrender.com/api/users/info
 
-Редагування норми - очікує { norm }
-
-      PATCH:  https://dreamteam-water-server.onrender.com/api/users/norm
-
 
 
 ## WATER
