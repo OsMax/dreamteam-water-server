@@ -22,8 +22,6 @@ const { SECRET_KEY } = process.env;
 const register = async (req, res, next) => {
   const { email, password } = req.body;
 
-  console.log(email, password);
-
   const hashPassword = await bcrypt.hash(password, 10);
 
   // const avatarURL = path.join("avatars", "avatarDefault.png");
@@ -31,9 +29,9 @@ const register = async (req, res, next) => {
 
   const verificationToken = nanoid();
 
-  const emailToVetification = emailLetter(email, verificationToken);
+  // const emailToVetification = emailLetter(email, verificationToken);
 
-  await emailSend(emailToVetification);
+  // await emailSend(emailToVetification);
 
   const newUser = await User.create({
     ...req.body,
