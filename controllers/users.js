@@ -24,7 +24,7 @@ const register = async (req, res, next) => {
 
   const hashPassword = await bcrypt.hash(password, 10);
 
-  const avatarURL = path.join("avatars", "avatarDefault.png");
+  // const avatarURL = path.join("avatars", "avatarDefault.png");
   // const avatarURL = gravatar.url(email);
 
   const verificationToken = nanoid();
@@ -36,7 +36,7 @@ const register = async (req, res, next) => {
   const newUser = await User.create({
     ...req.body,
     password: hashPassword,
-    avatarURL,
+    avatarURL: "",
     verificationToken,
   });
   res.status(201).json({
@@ -66,12 +66,7 @@ const login = async (req, res, next) => {
 
   res.status(200).json({
     token,
-    user: {
-      email,
-      name: user.name,
-      avatar: user.avatarURL,
-      norm: user.norm,
-    },
+    user,
   });
 };
 
@@ -86,8 +81,8 @@ const logout = async (req, res) => {
 // CURRENT_USER
 // ================================================================================================
 const getCurrent = async (req, res) => {
-  const { _id, email, name, avatarURL, norm } = req.user;
-  res.json({ _id, email, name, avatarURL, norm });
+  // const { _id, email, name, avatarURL, norm } = req.user;
+  res.json({ user: { ...req.user } });
 };
 
 // AVATAR

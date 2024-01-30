@@ -33,7 +33,7 @@ const addDrink = async (req, res) => {
   const { _id } = req.user;
   const { drink } = req.body;
   const { year, month, day } = req.body.date;
-  let result = await Water.findOneAndUpdate(
+  const result = await Water.findOneAndUpdate(
     {
       owner: _id,
       "date.year": year,
@@ -45,20 +45,7 @@ const addDrink = async (req, res) => {
       new: true,
     }
   );
-  const percent = Math.round(
-    (result.drinks.reduce(function (p, c) {
-      return p + c.ml;
-    }, 0) /
-      result.norm) *
-      100
-  );
-  result = await Water.findByIdAndUpdate(
-    result._id,
-    { percent: percent },
-    {
-      new: true,
-    }
-  );
+
   res.json(result);
 };
 

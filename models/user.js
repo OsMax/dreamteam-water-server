@@ -22,8 +22,8 @@ const userSchema = new Schema(
       default: "",
     },
     gender: {
-      type: Boolean,
-      default: false,
+      type: String,
+      default: "woman",
     },
     norm: {
       type: Number,
