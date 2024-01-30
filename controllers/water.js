@@ -1,7 +1,7 @@
 const { Water } = require("../models/water");
 const { User } = require("../models/user");
 
-// const { HttpError, ctrlWrapper } = require("../helpers");
+const { HttpError, ctrlWrapper, calcPercent } = require("../helpers");
 
 // GET CURRENT DAY
 // ========================================================================================
@@ -23,6 +23,7 @@ const currentDay = async (req, res) => {
       owner: req.user.id,
     });
   }
+
   res.status(200).json(result);
 };
 
@@ -67,15 +68,21 @@ const getMonth = async (req, res) => {
   const { _id } = req.user;
   const { year, month } = req.body.date;
 
-  const result = await Water.find({
+  const temp = await Water.find({
     owner: _id,
     "date.year": year,
     "date.month": `${month}`,
   });
 
-  // const result = temp.map((e) => {
-  //   return { date: e.date, percent: e.percent };
-  // });
+  const result = temp.map((e) => {
+    const percent = calcPercent(e.norm, e.drinks);
+    return {
+      date: e.date,
+      percent: percent,
+      norm: e.norm,
+      drinks: e.drinks.length,
+    };
+  });
 
   res.status(200).json(result);
 };
@@ -83,21 +90,20 @@ const getMonth = async (req, res) => {
 // EDIT NORM
 // ====================================================================================================
 const editUserNorm = async (req, res) => {
+  console.log("!!!");
   const { date, norm } = req.body;
   const { _id } = req.user;
 
-  const result = Water.findOne({ date, owner: _id });
-
-  const percent = Math.round(
-    (result.drinks.reduce((p, c) => {
-      return p + c.ml;
-    }, 0) /
-      result.norm) *
-      100
+  await User.findByIdAndUpdate(_id, { norm });
+  await Water.findOneAndUpdate(
+    {
+      owner: _id,
+      "date.year": date.year,
+      "date.month": `${date.month}`,
+      "date.day": date.day,
+    },
+    { norm }
   );
-
-  await User.findByIdAndUpdate(_id, { ...norm });
-  await Water.findOneAndUpdate({ date, owner: _id }, { norm, percent });
 
   res.status(200).json({ norm });
 };
@@ -132,20 +138,25 @@ const deleteDrink = async (req, res) => {
   res.json({ message: "Drink has been delet" });
 };
 
+// GET SHORT INFO ABOUT ANY DAY
+// ====================================================================================================
 const getDayInfo = async (req, res) => {
   const { _id } = req.user;
   const { year, month, day } = req.body.date;
   const result = await Water.findOne({
     owner: _id,
-    "date.year": `${year}`,
+    "date.year": year,
     "date.month": `${month}`,
-    "date.day": `${day}`,
+    "date.day": day,
   });
+
+  const percent = calcPercent(result.norm, result.drinks);
 
   res.status(200).json({
     day: result.date.day,
     month: result.date.month,
-    percent: result.percent,
+    norm: result.norm,
+    percent: percent,
     drinks: result.drinks.length,
   });
 };

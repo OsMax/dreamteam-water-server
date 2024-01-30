@@ -27,7 +27,7 @@ const waterSchema = new Schema(
   { versionKey: false }
 );
 
-// const addWaterSchema = Joi.object({
+// const addDrinkSchema = Joi.object({
 //   date: {
 //     year: Joi.number().required(),
 //     month: Joi.string().required(),
@@ -39,19 +39,29 @@ const waterSchema = new Schema(
 //   },
 // }).messages({ "any.required": "missing required {#key} field" });
 
-// const getDateSchema = Joi.object({
-//   date: {
-//     year: Joi.number().required(),
-//     month: Joi.string().required(),
-//     day: Joi.number(),
-//   },
-// }).messages({
-//   "any.required": "missing required {#key} field",
-// });
+const dateSchema = Joi.object({
+  date: {
+    year: Joi.number().required(),
+    month: Joi.string().required(),
+    day: Joi.number(),
+  },
+}).messages({
+  "any.required": "missing required {#key} field",
+});
+
+const drinkSchema = Joi.object({
+  drink: {
+    ml: Joi.number().required(),
+    time: Joi.string().required(),
+  },
+}).messages({
+  "any.required": "missing required {#key} field",
+});
 
 const schemas = {
-  // addWaterSchema,
-  // getDateSchema,
+  // addDrinkSchema,
+  dateSchema,
+  drinkSchema,
 };
 
 waterSchema.post("save", MongooseError);
