@@ -5,11 +5,7 @@ const MongooseError = require("../helpers/MongoosError");
 
 const waterSchema = new Schema(
   {
-    date: {
-      year: { type: Number },
-      month: { type: String },
-      day: { type: Number },
-    },
+    date: { typeof: Date },
     norm: { type: Number },
     percent: { type: Number, default: 0 },
     drinks: [
@@ -40,11 +36,7 @@ const waterSchema = new Schema(
 // }).messages({ "any.required": "missing required {#key} field" });
 
 const dateSchema = Joi.object({
-  date: {
-    year: Joi.number().required(),
-    month: Joi.string().required(),
-    day: Joi.number(),
-  },
+  date: Joi.date().required(),
 }).messages({
   "any.required": "missing required {#key} field",
 });

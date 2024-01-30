@@ -6,8 +6,8 @@ const { validateBody } = require("../../middlewares/validateBody");
 const { schemas } = require("../../models/water");
 
 const {
+  getDay,
   addDrink,
-  currentDay,
   getMonth,
   editUserNorm,
   editDrink,
@@ -18,7 +18,7 @@ const {
 const router = express.Router();
 
 // !!!
-router.post("/", isValidToken, validateBody(schemas.dateSchema), currentDay);
+router.post("/", isValidToken, validateBody(schemas.dateSchema), getDay);
 
 // !!!
 router.post(

@@ -5,26 +5,26 @@ const { HttpError, ctrlWrapper, calcPercent } = require("../helpers");
 
 // GET CURRENT DAY
 // ========================================================================================
-const currentDay = async (req, res) => {
-  const { _id } = req.user;
-  const { year, month, day } = req.body.date;
-  const { norm } = req.user;
-  let result = await Water.findOne({
-    owner: _id,
-    "date.year": year,
-    "date.month": `${month}`,
-    "date.day": day,
-  });
-  if (!result) {
-    result = await Water.create({
-      date: req.body.date,
-      norm,
-      drinks: [],
-      owner: req.user.id,
-    });
-  }
+const getDay = async (req, res) => {
+  // const { _id } = req.user;
+  // const { date } = req.body;
+  // const { norm } = req.user;
+  // let result = await Water.findOne({
+  //   owner: _id,
+  //   date,
+  // });
+  // if (!result) {
+  //   result = await Water.create({
+  //     date: req.body.date,
+  //     norm,
+  //     drinks: [],
+  //     owner: req.user.id,
+  //   });
+  // }
 
-  res.status(200).json(result);
+  console.log(new Date());
+
+  // res.status(200).json(result);
 };
 
 // ADD NEW DRINK TO CURRENT DAY
@@ -149,8 +149,8 @@ const getDayInfo = async (req, res) => {
 };
 
 module.exports = {
+  getDay,
   addDrink,
-  currentDay,
   getMonth,
   editUserNorm,
   editDrink,
