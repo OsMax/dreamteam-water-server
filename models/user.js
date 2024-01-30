@@ -32,7 +32,7 @@ const userSchema = new Schema(
     token: String,
     avatarURL: {
       type: String,
-      required: true,
+      default: "",
     },
     verify: {
       type: Boolean,
