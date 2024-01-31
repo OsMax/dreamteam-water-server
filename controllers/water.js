@@ -3,42 +3,46 @@ const { User } = require("../models/user");
 
 const { HttpError, ctrlWrapper, calcPercent } = require("../helpers");
 
-// GET CURRENT DAY
+// GET DAY
 // ========================================================================================
 const getDay = async (req, res) => {
-  // const { _id } = req.user;
-  // const { date } = req.body;
-  // const { norm } = req.user;
-  // let result = await Water.findOne({
-  //   owner: _id,
-  //   date,
-  // });
-  // if (!result) {
-  //   result = await Water.create({
-  //     date: req.body.date,
-  //     norm,
-  //     drinks: [],
-  //     owner: req.user.id,
-  //   });
-  // }
+  const { _id } = req.user;
+  const { date } = req.body;
+  const { norm } = req.user;
+  const newDate = new Date(date.split("T")[0]);
 
-  console.log(new Date());
+  let result = await Water.findOne({
+    owner: _id,
+    date: newDate,
+  });
+  if (!result) {
+    result = await Water.create({
+      date: newDate,
+      norm,
+      drinks: [],
+      owner: req.user.id,
+    });
+  }
 
-  // res.status(200).json(result);
+  if (!req.user.startDay) {
+    await User.findByIdAndUpdate(_id, { startDay: newDate });
+    result = { dayInfo: result, startDay: newDate };
+  } else {
+    result = { dayInfo: result, startDay: req.user.startDay };
+  }
+
+  res.status(200).json(result);
 };
 
 // ADD NEW DRINK TO CURRENT DAY
 // ========================================================================================
 const addDrink = async (req, res) => {
   const { _id } = req.user;
-  const { drink } = req.body;
-  const { year, month, day } = req.body.date;
+  const { date, drink } = req.body;
   const result = await Water.findOneAndUpdate(
     {
       owner: _id,
-      "date.year": year,
-      "date.month": `${month}`,
-      "date.day": day,
+      date,
     },
     { $push: { drinks: drink } },
     {
@@ -49,16 +53,49 @@ const addDrink = async (req, res) => {
   res.json(result);
 };
 
+// EDIT DRINK
+// ====================================================================================================
+const editDrink = async (req, res) => {
+  const { drink } = req.body;
+  const id = req.params.drinkId;
+  const result = await Water.findOneAndUpdate(
+    {
+      "drinks._id": id,
+    },
+    { $set: { "drinks.$.ml": drink.ml, "drinks.$.time": drink.time } },
+    {
+      new: true,
+    }
+  );
+  res.json(result);
+};
+
+// DELET DRINK
+// ====================================================================================================
+const deleteDrink = async (req, res) => {
+  const id = req.params.drinkId;
+  await Water.findOneAndUpdate(
+    {
+      "drinks._id": id,
+    },
+    { $pull: { drinks: { _id: id } } }
+  );
+  res.json({ message: "Drink has been delet" });
+};
+
 // GET MONTH INFORMATION
 // ========================================================================================
 const getMonth = async (req, res) => {
   const { _id } = req.user;
-  const { year, month } = req.body.date;
 
+  const { year, month } = req.body;
+  // const str = year + "-" + month;
   const temp = await Water.find({
     owner: _id,
-    "date.year": year,
-    "date.month": `${month}`,
+    date: {
+      $gte: `${year}-${month}-01`,
+      $lte: `${year}-${month}-31`,
+    },
   });
 
   const result = temp.map((e) => {
@@ -93,36 +130,6 @@ const editUserNorm = async (req, res) => {
   );
 
   res.status(200).json({ norm });
-};
-
-// EDIT DRINK
-// ====================================================================================================
-const editDrink = async (req, res) => {
-  const { drink } = req.body;
-  const id = req.params.drinkId;
-  const result = await Water.findOneAndUpdate(
-    {
-      "drinks._id": id,
-    },
-    { $set: { "drinks.$": drink } },
-    {
-      new: true,
-    }
-  );
-  res.json(result);
-};
-
-// DELET DRINK
-// ====================================================================================================
-const deleteDrink = async (req, res) => {
-  const id = req.params.drinkId;
-  await Water.findOneAndUpdate(
-    {
-      "drinks._id": id,
-    },
-    { $pull: { drinks: { _id: id } } }
-  );
-  res.json({ message: "Drink has been delet" });
 };
 
 // GET SHORT INFO ABOUT ANY DAY

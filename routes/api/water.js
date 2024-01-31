@@ -17,35 +17,33 @@ const {
 
 const router = express.Router();
 
-// !!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 router.post("/", isValidToken, validateBody(schemas.dateSchema), getDay);
 
-// !!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 router.post(
   "/drinks",
   isValidToken,
   validateBody(schemas.dateSchema),
-  validateBody(schemas.drinkSchema),
   addDrink
 );
 
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 router.patch(
   "/drinks/:drinkId",
   isValidToken,
   isValidId,
-  validateBody(schemas.drinkSchema),
+  validateBody(schemas.dateSchema),
   editDrink
 );
 
-// !!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 router.delete("/drinks/:drinkId", isValidToken, isValidId, deleteDrink);
 
-// !!!
-router.post("/month", isValidToken, validateBody(schemas.dateSchema), getMonth);
+router.post("/month", isValidToken, getMonth);
 
 router.patch("/norm", isValidToken, editUserNorm);
 
-// !!!
 router.post(
   "/days",
   isValidToken,

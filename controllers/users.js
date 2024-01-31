@@ -30,7 +30,6 @@ const register = async (req, res, next) => {
   const verificationToken = nanoid();
 
   // const emailToVetification = emailLetter(email, verificationToken);
-
   // await emailSend(emailToVetification);
 
   const newUser = await User.create({

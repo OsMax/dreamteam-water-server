@@ -42,6 +42,10 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Verify token is required"],
     },
+    startDay: {
+      type: Date,
+      default: null,
+    },
   },
   { versionKey: false, timestamps: true }
 );

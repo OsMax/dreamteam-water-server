@@ -1,11 +1,11 @@
 # https://dreamteam-water-server.onrender.com
+
 # Лайт версія документації
 
+## TEST USER
 
-## TEST USER      
     "email":"testUser@gmail.com",
     "password":"test1234"
-
 
 ## USER
 
@@ -17,7 +17,7 @@
 
       POST: https://dreamteam-water-server.onrender.com/api/users/login
 
-Вихід 
+Вихід
 
       POST: https://dreamteam-water-server.onrender.com/api/users/logout
 
@@ -41,20 +41,18 @@
 
       GET:  https://dreamteam-water-server.onrender.com/api/users/info
 
-Редагування інформації про користувача - очікує { name, email, gender, password }, 
-                                                  або { name, email, gender, password, newPassword }
+Редагування інформації про користувача - очікує { name, email, gender, password },
+або { name, email, gender, password, newPassword }
 
       PATCH:  https://dreamteam-water-server.onrender.com/api/users/info
 
-
-
 ## WATER
 
-Запит поточного дня - очікує { date:{ year: Number, month: String, day: Number } }
+Запит поточного дня - очікує { date: Date }
 
       POST: https://dreamteam-water-server.onrender.com/api/water
 
-Запит додавання випитого - очікує { date:{ year: Number, month: String, day: Number }, drink:{ ml: Number, time: String } }
+Запит додавання випитого - очікує { date: Date, drink:{ ml: Number, time: String } }
 
       POST: https://dreamteam-water-server.onrender.com/api/water/drinks
 
@@ -66,14 +64,14 @@
 
       DELETE: https://dreamteam-water-server.onrender.com/api/water/drinks/:drinkId
 
-Запит отримання місяця - очікує { date:{ year: Number, month: String } }
+Запит отримання місяця - очікує { year: Number, month: Number }
 
       POST: https://dreamteam-water-server.onrender.com/api/water/month
 
-Запит рудагування норми - очікує {  date:{ year: Number, month: String, day: Number }, norm: Number }
+Запит рудагування норми - очікує { date:{ year: Number, month: String, day: Number }, norm: Number }
 
       PATCH: https://dreamteam-water-server.onrender.com/api/water/norm
 
-Запит інформації за будь-який день - очікує {  date:{ year: Number, month: String, day: Number } }
+Запит інформації за будь-який день - очікує { date:{ year: Number, month: String, day: Number } }
 
       POST: https://dreamteam-water-server.onrender.com/api/water/days
