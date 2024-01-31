@@ -62,7 +62,7 @@ const reVerifShema = Joi.object({
 const editUserInfo = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().pattern(EMAILREGEX).required(),
-  gender: Joi.boolean().required(),
+  gender: Joi.string().required(),
   password: Joi.string().min(8).max(64).required(),
   newPassword: Joi.string().min(8).max(64),
 }).messages({
