@@ -189,8 +189,24 @@ const editUserInfo = async (req, res) => {
     newUserInfo.password = hashPassword;
   }
   const { _id } = req.user;
-  await User.findByIdAndUpdate(_id, { ...newUserInfo });
-  res.status(200).json({ message: "Changes have been made" });
+  const user = await User.findByIdAndUpdate(
+    _id,
+    { ...newUserInfo },
+    {
+      new: true,
+    }
+  );
+  res.status(200).json({
+    user: {
+      _id: user.id,
+      email: user.email,
+      name: user.name,
+      gender: user.gender,
+      norm: user.norm,
+      avatarURL: user.avatarURL,
+      startDay: user.startDay,
+    },
+  });
 };
 
 module.exports = {
