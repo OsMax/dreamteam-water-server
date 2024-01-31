@@ -119,14 +119,13 @@ const editUserNorm = async (req, res) => {
   console.log("!!!");
   const { date, norm } = req.body;
   const { _id } = req.user;
+  const newDate = new Date(date.split("T")[0]);
 
   await User.findByIdAndUpdate(_id, { norm });
   await Water.findOneAndUpdate(
     {
       owner: _id,
-      "date.year": date.year,
-      "date.month": `${date.month}`,
-      "date.day": date.day,
+      date: newDate,
     },
     { norm }
   );
@@ -138,12 +137,11 @@ const editUserNorm = async (req, res) => {
 // ====================================================================================================
 const getDayInfo = async (req, res) => {
   const { _id } = req.user;
-  const { year, month, day } = req.body.date;
+  const { date } = req.body;
+  const newDate = new Date(date.split("T")[0]);
   const result = await Water.findOne({
     owner: _id,
-    "date.year": year,
-    "date.month": `${month}`,
-    "date.day": day,
+    date: newDate,
   });
 
   const percent = calcPercent(result.norm, result.drinks);
