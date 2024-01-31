@@ -65,7 +65,15 @@ const login = async (req, res, next) => {
 
   res.status(200).json({
     token,
-    user,
+    user: {
+      _id: user.id,
+      email: user.email,
+      name: user.name,
+      gender: user.gender,
+      norm: user.norm,
+      avatarURL: user.avatarURL,
+      startDay: user.startDay,
+    },
   });
 };
 
@@ -82,7 +90,17 @@ const logout = async (req, res) => {
 const getCurrent = async (req, res) => {
   // const { _id, email, name, avatarURL, norm } = req.user;
   const user = req.user;
-  res.json({ user });
+  res.json({
+    user: {
+      _id: user.id,
+      email: user.email,
+      name: user.name,
+      gender: user.gender,
+      norm: user.norm,
+      avatarURL: user.avatarURL,
+      startDay: user.startDay,
+    },
+  });
 };
 
 // AVATAR
