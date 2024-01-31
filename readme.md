@@ -75,3 +75,4 @@
 Запит інформації за будь-який день - очікує { date:{ year: Number, month: String, day: Number } }
 
       POST: https://dreamteam-water-server.onrender.com/api/water/days
+
