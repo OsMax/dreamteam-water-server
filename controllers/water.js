@@ -101,7 +101,7 @@ const getMonth = async (req, res) => {
   const result = temp.map((e) => {
     const percent = calcPercent(e.norm, e.drinks);
     return {
-      day: new Date(e.date).getDay,
+      day: new Date(e.date).getDay(),
       percent: percent,
       norm: e.norm,
       drinks: e.drinks.length,
