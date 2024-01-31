@@ -81,7 +81,8 @@ const logout = async (req, res) => {
 // ================================================================================================
 const getCurrent = async (req, res) => {
   // const { _id, email, name, avatarURL, norm } = req.user;
-  res.json({ user: { ...req.user } });
+  const user = req.user;
+  res.json({ user });
 };
 
 // AVATAR
