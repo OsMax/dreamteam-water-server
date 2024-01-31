@@ -23,6 +23,8 @@ const getDay = async (req, res) => {
       owner: req.user.id,
     });
   }
+  const percent = calcPercent(result.norm, result.drinks);
+  result.percent = percent;
 
   if (!req.user.startDay) {
     await User.findByIdAndUpdate(_id, { startDay: newDate });
