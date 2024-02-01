@@ -12,7 +12,6 @@ const {
   editUserNorm,
   editDrink,
   deleteDrink,
-  getDayInfo,
 } = require("../../controllers/water");
 
 const router = express.Router();
@@ -22,33 +21,38 @@ router.post("/", isValidToken, validateBody(schemas.dateSchema), getDay);
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 router.post(
-  "/drinks",
+  "/drinks/:id",
   isValidToken,
-  validateBody(schemas.dateSchema),
+  isValidId,
+  validateBody(schemas.drinkSchema),
   addDrink
 );
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 router.patch(
-  "/drinks/:drinkId",
+  "/drinks/:id",
   isValidToken,
   isValidId,
-  validateBody(schemas.dateSchema),
+  validateBody(schemas.drinkSchema),
   editDrink
 );
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-router.delete("/drinks/:drinkId", isValidToken, isValidId, deleteDrink);
+router.delete("/drinks/:id", isValidToken, isValidId, deleteDrink);
 
-router.post("/month", isValidToken, getMonth);
-
-router.patch("/norm", isValidToken, editUserNorm);
-
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 router.post(
-  "/days",
+  "/month",
   isValidToken,
-  validateBody(schemas.dateSchema),
-  getDayInfo
+  validateBody(schemas.monthSchema),
+  getMonth
+);
+
+router.patch(
+  "/norm",
+  isValidToken,
+  validateBody(schemas.normSchema),
+  editUserNorm
 );
 
 module.exports = router;

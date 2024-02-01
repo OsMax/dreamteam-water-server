@@ -24,17 +24,36 @@ const waterSchema = new Schema(
 );
 
 const dateSchema = Joi.object({
-  date: Joi.date(),
-  drink: {
-    ml: Joi.number().required(),
-    time: Joi.string().required(),
-  },
+  date: Joi.date().required(),
+}).messages({
+  "any.required": "missing required {#key} field",
+});
+
+const drinkSchema = Joi.object({
+  ml: Joi.number().required(),
+  time: Joi.string().required(),
+}).messages({
+  "any.required": "missing required {#key} field",
+});
+
+const monthSchema = Joi.object({
+  year: Joi.number().required(),
+  month: Joi.number().required(),
+}).messages({
+  "any.required": "missing required {#key} field",
+});
+
+const normSchema = Joi.object({
+  norm: Joi.number().required(),
 }).messages({
   "any.required": "missing required {#key} field",
 });
 
 const schemas = {
   dateSchema,
+  drinkSchema,
+  monthSchema,
+  normSchema,
 };
 
 waterSchema.post("save", MongooseError);
