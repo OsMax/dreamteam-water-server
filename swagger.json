@@ -1,0 +1,665 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "0.0.1",
+    "title": "Dreamteam water",
+    "description": "Water Consumption Accounting Program",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "consumes": [
+    "application/json",
+    "multipart/form-data",
+    "image/png"
+  ],
+  "produces": [
+    "application/json",
+    "multipart/form-data",
+    "image/png"
+  ],
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local"
+    },
+    {
+      "url": "https://dreamteam-water-server.onrender.com",
+      "description": "Main"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authentication - endpoints including user registration, login, authorization and logout"
+    },
+    {
+      "name": "User",
+      "description": "SUser - endpoints for managing user information, including avatar, profile viewing, and updates"
+    },
+    {
+      "name": "Water",
+      "description": "Water Consumption Calculation - endpoint for updating the daily water consumption norm for users. Water - endpoints for managing water consumption records, including adding, editing, and deleting entries. Today - endpoint for retrieving information about water consumed on the current day. Month - endpoint for retrieving monthly water consumption data."
+    }
+  ],
+  "paths": {
+    "/api/users/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Create a new user",
+        "parameters": [],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/authSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responseAuth"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "missing fields"
+          },
+          "409": {
+            "description": "Email in use"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/users/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "User login",
+        "parameters": [],
+        "requestBody": {
+          "description": "Login object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/authSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation - User is logged in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responseLogin"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "missing fields"
+          },
+          "401": {
+            "description": "Need to email verification or Email or password is wrong"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/users/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Log out user",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Logout success"
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/users/current": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get information about the current user",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responseGetCurrentUser"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/users/avatars": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update user avatar",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "description": "User avatar object",
+          "required": true,
+          "content": {
+            "multipart/form-data:": {
+              "schema": {
+                "$ref": "#/components/schemas/requestUpdateAvatarUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "avatarURL": "string"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Missing fields"
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/users/verify/{verificationToken}": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Update user token",
+        "parameters": [
+          {
+            "name": "verificationToken",
+            "in": "path",
+            "required": true,
+            "description": "Verification token of the user",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Verification successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Verification successful"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/users/verify": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Verify user Email",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "User's email"
+                  }
+                },
+                "required": [
+                  "email"
+                ]
+              },
+              "example": {
+                "email": "testUser@gmail.com"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Verification email sent",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Verification email sent"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Verification has already been passed"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/api/users/info": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get information about the current user",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responseGetUserInfo"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Path information about the current user",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Login object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/requestUpdateInfoUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responseUpdateInfoUser"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "authSchema": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "pattern": "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$",
+            "example": "testUser@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 64,
+            "example": "test1234"
+          }
+        }
+      },
+      "responseAuth": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Unique identifier of the user",
+                "example": "65b55865b6b2ac84bc52a78y"
+              },
+              "email": {
+                "type": "string",
+                "format": "email",
+                "description": "Email address of the user",
+                "example": "testUser@gmail.com"
+              }
+            }
+          }
+        }
+      },
+      "responseLogin": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Authentication token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "ID of the user",
+                "example": "65baa642572064935b2456h7"
+              },
+              "email": {
+                "type": "string",
+                "format": "email",
+                "description": "Email of the user"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the user",
+                "example": "UserFirst"
+              },
+              "gender": {
+                "type": "string",
+                "description": "Gender of the user",
+                "example": "woman"
+              },
+              "norm": {
+                "type": "number",
+                "description": "User's daily norm",
+                "example": "2000"
+              },
+              "avatarURL": {
+                "type": "string",
+                "description": "URL of the user's avatar",
+                "example": "avatars/65b55865b6b2ac84bc52a78f.jpg"
+              },
+              "startDay": {
+                "type": "number",
+                "description": "User's daily norm",
+                "example": null
+              }
+            }
+          }
+        }
+      },
+      "responseGetCurrentUser": {
+        "type": "object",
+        "required": [
+          "_id",
+          "email",
+          "name",
+          "avatarURL",
+          "norm"
+        ],
+        "properties": {
+          "n_id": {
+            "type": "string",
+            "example": "65b55865b6b2ac84bc52a78y"
+          },
+          "email": {
+            "type": "string",
+            "example": "testUser@gmail.com"
+          },
+          "name": {
+            "type": "string",
+            "example": "UserFirst"
+          },
+          "gender": {
+            "type": "string",
+            "example": "woman"
+          },
+          "norm": {
+            "type": "string",
+            "example": "2000"
+          },
+          "avatarURL": {
+            "type": "string",
+            "example": "avatars/65b55865b6b2ac84bc52a78f.jpg"
+          },
+          "startDay": {
+            "type": "number",
+            "description": "User's daily norm",
+            "example": null
+          }
+        }
+      },
+      "requestUpdateAvatarUser": {
+        "type": "object",
+        "properties": {
+          "avatar": {
+            "type": "string",
+            "format": "binary",
+            "description": "File avatar",
+            "example": "avatars/65b55865b6b2ac84bc52a78f.jpg"
+          }
+        }
+      },
+      "responseGetUserInfo": {
+        "type": "object",
+        "required": [
+          "_id",
+          "email",
+          "name",
+          "gender"
+        ],
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "65b55865b6b2ac84bc52a78y"
+          },
+          "email": {
+            "type": "string",
+            "example": "testUser@gmail.com"
+          },
+          "name": {
+            "type": "string",
+            "example": "UserFirst"
+          },
+          "gender": {
+            "type": "string",
+            "example": "woman"
+          }
+        }
+      },
+      "requestUpdateInfoUser": {
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "gender",
+          "password"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "UserFirst"
+          },
+          "email": {
+            "type": "string",
+            "example": "testUser@gmail.com"
+          },
+          "gender": {
+            "type": "string",
+            "example": "woman"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 64,
+            "example": "test1234"
+          },
+          "newPassword": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 64,
+            "example": "test6789"
+          }
+        }
+      },
+      "responseUpdateInfoUser": {
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "gender",
+          "password"
+        ],
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "65b55865b6b2ac84bc52a78y"
+          },
+          "email": {
+            "type": "string",
+            "example": "testUser@gmail.com"
+          },
+          "name": {
+            "type": "string",
+            "example": "UserFirst"
+          },
+          "gender": {
+            "type": "string",
+            "example": "woman"
+          },
+          "norm": {
+            "type": "string",
+            "example": "2000"
+          },
+          "avatarURL": {
+            "type": "string",
+            "example": "avatars/65b55865b6b2ac84bc52a78f.jpg"
+          },
+          "startDay": {
+            "type": "number",
+            "description": "User's daily norm",
+            "example": null
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
