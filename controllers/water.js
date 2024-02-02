@@ -55,6 +55,9 @@ const addDrink = async (req, res) => {
     throw HttpError(404, "The day not found");
   }
 
+  const percent = calcPercent(result.norm, result.drinks);
+  result.percent = percent;
+
   res.json(result);
 };
 
@@ -83,6 +86,9 @@ const editDrink = async (req, res) => {
     throw HttpError(404, "The drink not found");
   }
 
+  const percent = calcPercent(result.norm, result.drinks);
+  result.percent = percent;
+
   res.json(result);
 };
 
@@ -100,6 +106,10 @@ const deleteDrink = async (req, res) => {
   if (!result) {
     throw HttpError(404, "The drink not found");
   }
+
+  const percent = calcPercent(result.norm, result.drinks);
+  result.percent = percent;
+
   res.json(result);
 };
 
@@ -149,7 +159,7 @@ const editUserNorm = async (req, res) => {
   const newDate = new Date(date.split("T")[0]);
 
   await User.findByIdAndUpdate(_id, { norm });
-  await Water.findOneAndUpdate(
+  const result = await Water.findOneAndUpdate(
     {
       owner: _id,
       date: newDate,
@@ -157,7 +167,14 @@ const editUserNorm = async (req, res) => {
     { norm }
   );
 
-  res.status(200).json({ norm });
+  if (!result) {
+    throw HttpError(404, "The day not found");
+  }
+
+  const percent = calcPercent(result.norm, result.drinks);
+  result.percent = percent;
+
+  res.status(200).json(result);
 };
 
 // GET SHORT INFO ABOUT ANY DAY
