@@ -65,7 +65,7 @@ const editDrink = async (req, res) => {
     throw HttpError(400, "missing fields");
   }
   const { ml, time } = req.body;
-  if (ml > 5000) {
+  if (ml > 5000 || ml < 0) {
     throw HttpError(401, "Incorrect amount of drink (need<=5000)");
   }
   const { id } = req.params;
@@ -142,7 +142,7 @@ const editUserNorm = async (req, res) => {
     throw HttpError(400, "missing fields");
   }
   const { date, norm } = req.body;
-  if (norm > 15000) {
+  if (norm > 15000 || norm < 0) {
     throw HttpError(401, "Incorrect norm (need <=15000)");
   }
   const { _id } = req.user;
