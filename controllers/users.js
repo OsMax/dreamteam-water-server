@@ -20,7 +20,7 @@ const { SECRET_KEY } = process.env;
 // REGISTER
 // ================================================================================================
 const register = async (req, res, next) => {
-  const { email, password } = req.body;
+  const { password } = req.body;
 
   const hashPassword = await bcrypt.hash(password, 10);
 
@@ -70,7 +70,7 @@ const login = async (req, res, next) => {
       email: user.email,
       name: user.name,
       gender: user.gender,
-      norm: user.norm,
+      // norm: user.norm,
       avatarURL: user.avatarURL,
       startDay: user.startDay,
     },
@@ -96,7 +96,7 @@ const getCurrent = async (req, res) => {
       email: user.email,
       name: user.name,
       gender: user.gender,
-      norm: user.norm,
+      // norm: user.norm,
       avatarURL: user.avatarURL,
       startDay: user.startDay,
     },

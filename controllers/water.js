@@ -65,6 +65,9 @@ const editDrink = async (req, res) => {
     throw HttpError(400, "missing fields");
   }
   const { ml, time } = req.body;
+  if (ml > 5000) {
+    throw HttpError(401, "Incorrect amount of drink (need<=5000)");
+  }
   const { id } = req.params;
   const result = await Water.findOneAndUpdate(
     {
@@ -139,6 +142,9 @@ const editUserNorm = async (req, res) => {
     throw HttpError(400, "missing fields");
   }
   const { date, norm } = req.body;
+  if (norm > 15000) {
+    throw HttpError(401, "Incorrect norm (need <=15000)");
+  }
   const { _id } = req.user;
   const newDate = new Date(date.split("T")[0]);
 
