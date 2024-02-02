@@ -101,7 +101,10 @@ const deleteDrink = async (req, res) => {
     {
       "drinks._id": id,
     },
-    { $pull: { drinks: { _id: id } } }
+    { $pull: { drinks: { _id: id } } },
+    {
+      new: true,
+    }
   );
   if (!result) {
     throw HttpError(404, "The drink not found");
