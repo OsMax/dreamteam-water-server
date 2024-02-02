@@ -44,6 +44,7 @@ const monthSchema = Joi.object({
 });
 
 const normSchema = Joi.object({
+  date: Joi.date().required(),
   norm: Joi.number().required(),
 }).messages({
   "any.required": "missing required {#key} field",
