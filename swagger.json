@@ -9,16 +9,8 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "consumes": [
-    "application/json",
-    "multipart/form-data",
-    "image/png"
-  ],
-  "produces": [
-    "application/json",
-    "multipart/form-data",
-    "image/png"
-  ],
+  "consumes": ["application/json", "multipart/form-data", "image/png"],
+  "produces": ["application/json", "multipart/form-data", "image/png"],
   "servers": [
     {
       "url": "http://localhost:3000",
@@ -46,9 +38,7 @@
   "paths": {
     "/api/users/register": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "Create a new user",
         "parameters": [],
         "requestBody": {
@@ -87,9 +77,7 @@
     },
     "/api/users/login": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "User login",
         "parameters": [],
         "requestBody": {
@@ -128,9 +116,7 @@
     },
     "/api/users/logout": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "Log out user",
         "parameters": [],
         "security": [
@@ -153,9 +139,7 @@
     },
     "/api/users/current": {
       "get": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "summary": "Get information about the current user",
         "parameters": [],
         "security": [
@@ -185,9 +169,7 @@
     },
     "/api/users/avatars": {
       "patch": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "summary": "Update user avatar",
         "security": [
           {
@@ -199,7 +181,7 @@
           "description": "User avatar object",
           "required": true,
           "content": {
-            "multipart/form-data:": {
+            "multipart/form-data": {
               "schema": {
                 "$ref": "#/components/schemas/requestUpdateAvatarUser"
               }
@@ -233,9 +215,7 @@
     },
     "/api/users/verify/{verificationToken}": {
       "get": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "Update user token",
         "parameters": [
           {
@@ -279,9 +259,7 @@
     },
     "/api/users/verify": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "Verify user Email",
         "parameters": [],
         "security": [
@@ -302,9 +280,7 @@
                     "description": "User's email"
                   }
                 },
-                "required": [
-                  "email"
-                ]
+                "required": ["email"]
               },
               "example": {
                 "email": "testUser@gmail.com"
@@ -334,9 +310,7 @@
     },
     "/api/users/info": {
       "get": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "summary": "Get information about the current user",
         "parameters": [],
         "security": [
@@ -364,9 +338,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "summary": "Path information about the current user",
         "parameters": [],
         "security": [
@@ -404,16 +376,330 @@
           }
         }
       }
+    },
+    "/api/water": {
+      "post": {
+        "tags": ["Water"],
+        "summary": "Get information for the specified day",
+        "description": "Retrieves water consumption records for the current user for the specified date.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The date to retrieve water consumption information for, in ISO format."
+                  }
+                },
+                "required": ["date"]
+              },
+              "example": {
+                "date": "2023-01-01T00:00:00.000Z"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the water consumption information for the specified date.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "dayInfo": {
+                      "$ref": "#/components/schemas/DayInfo"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing fields"
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/water/drinks/{id}": {
+      "post": {
+        "tags": ["Water"],
+        "summary": "Add a new drink to the current day",
+        "description": "Add a new drink to the current day",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "operationId": "addDrink",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the day to add the drink to",
+            "schema": {
+              "type": "string",
+              "example": "65b55865b6b2ac88bc55a78y"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddDrinkRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterDayResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The day not found"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Water"],
+        "summary": "Edit an existing drink entry for the current day",
+        "description": "Edit details of a specific drink entry.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "operationId": "EditDrink",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the day to edit the drink to",
+            "schema": {
+              "type": "string",
+              "example": "65b55865b6b2ac88bc55a78y"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddDrinkRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterDayResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The day not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Water"],
+        "summary": "Delete a specific drink",
+        "description": "Deletes a specific drink entry based on the provided ID.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of drink to delete",
+            "schema": {
+              "type": "string",
+              "example": "65b55865b6b2ac88bc55a78y"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterDayResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The day not found"
+          }
+        }
+      }
+    },
+    "/api/water/month": {
+      "post": {
+        "tags": ["Water"],
+        "summary": "Get information for the month",
+        "description": "Retrieves water consumption records for the specified month for the current user.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["year", "month"],
+                "properties": {
+                  "year": {
+                    "type": "string",
+                    "description": "The year for which to retrieve water consumption information, formatted as YYYY.",
+                    "example": "2024"
+                  },
+                  "month": {
+                    "type": "string",
+                    "description": "The month for which to retrieve water consumption information, formatted as MM.",
+                    "example": "02"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the water consumption information for the specified date.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonthWaterResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing fields"
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "404": {
+            "description": "The month not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/water/norm": {
+      "patch": {
+        "tags": ["Water"],
+        "summary": "Edit the water consumption norm",
+        "description": "Updates the daily water consumption norm for the current user.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["norm"],
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The specific date for which water consumption data is provided.",
+                    "example": "2023-01-01T00:00:00.000Z"
+                  },
+                  "norm": {
+                    "type": "integer",
+                    "description": "The new daily water consumption norm in milliliters.",
+                    "example": 1000
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated the water consumption norm.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "norm": {
+                      "type": "integer",
+                      "description": "The updated daily water consumption norm in milliliters.",
+                      "example": 1000
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing fields"
+          },
+          "401": {
+            "description": "Not authorized or Incorrect norm (need <=15000)"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
       "authSchema": {
         "type": "object",
-        "required": [
-          "email",
-          "password"
-        ],
+        "required": ["email", "password"],
         "properties": {
           "email": {
             "type": "string",
@@ -501,13 +787,7 @@
       },
       "responseGetCurrentUser": {
         "type": "object",
-        "required": [
-          "_id",
-          "email",
-          "name",
-          "avatarURL",
-          "norm"
-        ],
+        "required": ["_id", "email", "name", "avatarURL", "norm"],
         "properties": {
           "n_id": {
             "type": "string",
@@ -553,12 +833,7 @@
       },
       "responseGetUserInfo": {
         "type": "object",
-        "required": [
-          "_id",
-          "email",
-          "name",
-          "gender"
-        ],
+        "required": ["_id", "email", "name", "gender"],
         "properties": {
           "_id": {
             "type": "string",
@@ -580,12 +855,7 @@
       },
       "requestUpdateInfoUser": {
         "type": "object",
-        "required": [
-          "name",
-          "email",
-          "gender",
-          "password"
-        ],
+        "required": ["name", "email", "gender", "password"],
         "properties": {
           "name": {
             "type": "string",
@@ -615,12 +885,7 @@
       },
       "responseUpdateInfoUser": {
         "type": "object",
-        "required": [
-          "name",
-          "email",
-          "gender",
-          "password"
-        ],
+        "required": ["name", "email", "gender", "password"],
         "properties": {
           "_id": {
             "type": "string",
@@ -650,6 +915,185 @@
             "type": "number",
             "description": "User's daily norm",
             "example": null
+          }
+        }
+      },
+      "DayInfo": {
+        "type": "object",
+        "required": [
+          "_id",
+          "date",
+          "norm",
+          "percent",
+          "drinks",
+          "owner",
+          "startDay"
+        ],
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID day info",
+            "example": "65b55865b6b2ac88bc52a78y"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The specific date for which water consumption data is provided.",
+            "example": "2023-01-01T00:00:00.000Z"
+          },
+          "norm": {
+            "type": "integer",
+            "description": "The daily water consumption norm for the user in milliliters.",
+            "example": 2000
+          },
+          "percent": {
+            "type": "number",
+            "format": "float",
+            "description": "The percentage of the daily norm that has been consumed.",
+            "example": 37.5
+          },
+          "drinks": {
+            "type": "array",
+            "description": "Array of water consumption records for the day.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "time": {
+                  "type": "string",
+                  "format": "string",
+                  "description": "The time when the water was consumed.",
+                  "example": "8:14 AM"
+                },
+                "ml": {
+                  "type": "integer",
+                  "description": "Amount of water consumed at this time, in milliliters.",
+                  "example": 250
+                },
+                "_id": {
+                  "type": "string",
+                  "description": "ID one drink",
+                  "example": "65b55865b6b2ac84bc52a56y"
+                }
+              }
+            },
+            "example": [
+              {
+                "ml": "250",
+                "time": "7:33 AM",
+                "_id": "65b55111b6b2ac84bc52a56y"
+              },
+              {
+                "ml": "500",
+                "time": "10:33 AM",
+                "_id": "65b33111b6b2ac84bc52a56y"
+              }
+            ]
+          },
+          "owner": {
+            "type": "string",
+            "description": "Users ID",
+            "example": "65b55865b6b2ac84bc52a78y"
+          },
+          "startDay": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The start date of the current period being analyzed.",
+            "example": "2023-01-01T00:00:00.000Z"
+          }
+        }
+      },
+      "AddDrinkRequest": {
+        "type": "object",
+        "required": ["ml", "time"],
+        "properties": {
+          "ml": {
+            "type": "number",
+            "description": "Amount of water to add in milliliters",
+            "example": "250"
+          },
+          "time": {
+            "type": "string",
+            "description": "Time at which the water is drunk",
+            "example": "7:33 AM"
+          }
+        }
+      },
+      "WaterDayResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Unique identifier of the day",
+            "example": "65b55865b6b2ac00bc52a78y"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The specific date for which water consumption data is provided.",
+            "example": "2023-01-01T00:00:00.000Z"
+          },
+          "norm": {
+            "type": "integer",
+            "description": "The daily water consumption norm for the user in milliliters.",
+            "example": 2000
+          },
+          "percent": {
+            "type": "number",
+            "format": "float",
+            "description": "The percentage of the daily norm that has been consumed.",
+            "example": 37.5
+          },
+          "drinks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ml": {
+                  "type": "number",
+                  "description": "Amount of water drunk in milliliters",
+                  "example": "250"
+                },
+                "time": {
+                  "type": "string",
+                  "description": "Time when the water was drunk",
+                  "example": "7:33 AM"
+                }
+              }
+            }
+          },
+          "owner": {
+            "type": "string",
+            "description": "Users ID",
+            "example": "65b55865b6b2ac84bc52a78y"
+          }
+        }
+      },
+      "MonthWaterResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "day": {
+              "type": "string",
+              "format": "date-time",
+              "description": "The specific day of the water consumption record in ISO 8601 format.",
+              "example": "2024-02-02T00:00:00.000Z"
+            },
+            "percent": {
+              "type": "number",
+              "description": "The percentage of the daily water consumption norm that has been consumed.",
+              "example": 20
+            },
+            "norm": {
+              "type": "integer",
+              "description": "The daily water consumption norm for the user in milliliters.",
+              "example": 2000
+            },
+            "drinks": {
+              "type": "integer",
+              "description": "The number of drinks recorded for the day.",
+              "example": 3
+            }
           }
         }
       }
