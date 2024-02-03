@@ -167,7 +167,10 @@ const editUserNorm = async (req, res) => {
       owner: _id,
       date: newDate,
     },
-    { norm }
+    { norm },
+    {
+      new: true,
+    }
   );
 
   if (!result) {
