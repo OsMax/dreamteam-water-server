@@ -215,7 +215,7 @@ module.exports = {
   getCurrent,
   logout,
   changeAvatar: ctrlWrapper(changeAvatar),
-  verification,
+  verification: ctrlWrapper(verification),
   reVerification,
   getUserInfo,
   editUserInfo: ctrlWrapper(editUserInfo),
