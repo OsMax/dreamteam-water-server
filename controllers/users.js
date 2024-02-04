@@ -8,6 +8,8 @@ const { nanoid } = require("nanoid");
 
 const { User } = require("../models/user");
 
+const uploadImage = require("../helpers/cloudinary/cloudinaryAPI");
+
 const {
   ctrlWrapper,
   HttpError,
@@ -105,8 +107,6 @@ const getCurrent = async (req, res) => {
 
 // AVATAR
 // ================================================================================================
-const avatarDir = path.join(__dirname, "..", "public", "avatars");
-
 const changeAvatar = async (req, res) => {
   const { _id } = req.user;
 
@@ -114,19 +114,19 @@ const changeAvatar = async (req, res) => {
 
   const { path: tempUpload, originalname } = req.file;
   const fileName = originalname.split(".");
-  const newFileName = `${_id}` + "." + `${fileName[1]}`;
-  const resultUpload = path.join(avatarDir, newFileName);
+  const newFileName = path.join("temp", `${_id}` + "." + `${fileName[1]}`);
 
   await Jimp.read(tempUpload).then((ava) =>
-    ava.resize(250, 250).write(`${resultUpload}`)
+    ava.resize(250, 250).write(newFileName)
   );
-
   await fs.unlink(tempUpload);
 
-  const avatarURL = path.join("avatars", newFileName);
-  await User.findByIdAndUpdate(_id, { avatarURL });
+  const avatar = await uploadImage(newFileName);
+  await fs.unlink(newFileName);
 
-  res.json({ avatarURL });
+  await User.findByIdAndUpdate(_id, { avatarURL: avatar.url });
+
+  res.json({ avatarURL: avatar.url });
 };
 
 // VERIFICATION

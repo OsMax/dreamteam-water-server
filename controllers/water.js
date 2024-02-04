@@ -183,28 +183,6 @@ const editUserNorm = async (req, res) => {
   res.status(200).json(result);
 };
 
-// GET SHORT INFO ABOUT ANY DAY
-// ====================================================================================================
-// const getDayInfo = async (req, res) => {
-//   const { _id } = req.user;
-//   const { date } = req.body;
-//   const newDate = new Date(date.split("T")[0]);
-//   const result = await Water.findOne({
-//     owner: _id,
-//     date: newDate,
-//   });
-
-//   const percent = calcPercent(result.norm, result.drinks);
-
-//   res.status(200).json({
-//     day: result.date.day,
-//     month: result.date.month,
-//     norm: result.norm,
-//     percent: percent,
-//     drinks: result.drinks.length,
-//   });
-// };
-
 module.exports = {
   getDay: ctrlWrapper(getDay),
   addDrink: ctrlWrapper(addDrink),
