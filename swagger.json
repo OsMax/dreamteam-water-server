@@ -9,8 +9,16 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "consumes": ["application/json", "multipart/form-data", "image/png"],
-  "produces": ["application/json", "multipart/form-data", "image/png"],
+  "consumes": [
+    "application/json",
+    "multipart/form-data",
+    "image/png"
+  ],
+  "produces": [
+    "application/json",
+    "multipart/form-data",
+    "image/png"
+  ],
   "servers": [
     {
       "url": "http://localhost:3000",
@@ -38,7 +46,9 @@
   "paths": {
     "/api/users/register": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Create a new user",
         "parameters": [],
         "requestBody": {
@@ -77,7 +87,9 @@
     },
     "/api/users/login": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "User login",
         "parameters": [],
         "requestBody": {
@@ -116,7 +128,9 @@
     },
     "/api/users/logout": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Log out user",
         "parameters": [],
         "security": [
@@ -139,7 +153,9 @@
     },
     "/api/users/current": {
       "get": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Get information about the current user",
         "parameters": [],
         "security": [
@@ -169,7 +185,9 @@
     },
     "/api/users/avatars": {
       "patch": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Update user avatar",
         "security": [
           {
@@ -215,7 +233,9 @@
     },
     "/api/users/verify/{verificationToken}": {
       "get": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Update user token",
         "parameters": [
           {
@@ -259,7 +279,9 @@
     },
     "/api/users/verify": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Verify user Email",
         "parameters": [],
         "security": [
@@ -280,7 +302,9 @@
                     "description": "User's email"
                   }
                 },
-                "required": ["email"]
+                "required": [
+                  "email"
+                ]
               },
               "example": {
                 "email": "testUser@gmail.com"
@@ -310,7 +334,9 @@
     },
     "/api/users/info": {
       "get": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Get information about the current user",
         "parameters": [],
         "security": [
@@ -338,7 +364,9 @@
         }
       },
       "patch": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Path information about the current user",
         "parameters": [],
         "security": [
@@ -379,7 +407,9 @@
     },
     "/api/water": {
       "post": {
-        "tags": ["Water"],
+        "tags": [
+          "Water"
+        ],
         "summary": "Get information for the specified day",
         "description": "Retrieves water consumption records for the current user for the specified date.",
         "security": [
@@ -400,7 +430,9 @@
                     "description": "The date to retrieve water consumption information for, in ISO format."
                   }
                 },
-                "required": ["date"]
+                "required": [
+                  "date"
+                ]
               },
               "example": {
                 "date": "2023-01-01T00:00:00.000Z"
@@ -438,7 +470,9 @@
     },
     "/api/water/drinks/{id}": {
       "post": {
-        "tags": ["Water"],
+        "tags": [
+          "Water"
+        ],
         "summary": "Add a new drink to the current day",
         "description": "Add a new drink to the current day",
         "security": [
@@ -486,7 +520,9 @@
         }
       },
       "patch": {
-        "tags": ["Water"],
+        "tags": [
+          "Water"
+        ],
         "summary": "Edit an existing drink entry for the current day",
         "description": "Edit details of a specific drink entry.",
         "security": [
@@ -534,7 +570,9 @@
         }
       },
       "delete": {
-        "tags": ["Water"],
+        "tags": [
+          "Water"
+        ],
         "summary": "Delete a specific drink",
         "description": "Deletes a specific drink entry based on the provided ID.",
         "security": [
@@ -573,7 +611,9 @@
     },
     "/api/water/month": {
       "post": {
-        "tags": ["Water"],
+        "tags": [
+          "Water"
+        ],
         "summary": "Get information for the month",
         "description": "Retrieves water consumption records for the specified month for the current user.",
         "security": [
@@ -587,7 +627,10 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["year", "month"],
+                "required": [
+                  "year",
+                  "month"
+                ],
                 "properties": {
                   "year": {
                     "type": "string",
@@ -632,7 +675,9 @@
     },
     "/api/water/norm": {
       "patch": {
-        "tags": ["Water"],
+        "tags": [
+          "Water"
+        ],
         "summary": "Edit the water consumption norm",
         "description": "Updates the daily water consumption norm for the current user.",
         "security": [
@@ -646,7 +691,9 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["norm"],
+                "required": [
+                  "norm"
+                ],
                 "properties": {
                   "date": {
                     "type": "string",
@@ -670,14 +717,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "norm": {
-                      "type": "integer",
-                      "description": "The updated daily water consumption norm in milliliters.",
-                      "example": 1000
-                    }
-                  }
+                  "$ref": "#/components/schemas/WaterDayResponse"
                 }
               }
             }
@@ -699,7 +739,10 @@
     "schemas": {
       "authSchema": {
         "type": "object",
-        "required": ["email", "password"],
+        "required": [
+          "email",
+          "password"
+        ],
         "properties": {
           "email": {
             "type": "string",
@@ -787,7 +830,13 @@
       },
       "responseGetCurrentUser": {
         "type": "object",
-        "required": ["_id", "email", "name", "avatarURL", "norm"],
+        "required": [
+          "_id",
+          "email",
+          "name",
+          "avatarURL",
+          "norm"
+        ],
         "properties": {
           "n_id": {
             "type": "string",
@@ -833,7 +882,12 @@
       },
       "responseGetUserInfo": {
         "type": "object",
-        "required": ["_id", "email", "name", "gender"],
+        "required": [
+          "_id",
+          "email",
+          "name",
+          "gender"
+        ],
         "properties": {
           "_id": {
             "type": "string",
@@ -855,7 +909,12 @@
       },
       "requestUpdateInfoUser": {
         "type": "object",
-        "required": ["name", "email", "gender", "password"],
+        "required": [
+          "name",
+          "email",
+          "gender",
+          "password"
+        ],
         "properties": {
           "name": {
             "type": "string",
@@ -885,7 +944,12 @@
       },
       "responseUpdateInfoUser": {
         "type": "object",
-        "required": ["name", "email", "gender", "password"],
+        "required": [
+          "name",
+          "email",
+          "gender",
+          "password"
+        ],
         "properties": {
           "_id": {
             "type": "string",
@@ -1004,7 +1068,10 @@
       },
       "AddDrinkRequest": {
         "type": "object",
-        "required": ["ml", "time"],
+        "required": [
+          "ml",
+          "time"
+        ],
         "properties": {
           "ml": {
             "type": "number",
