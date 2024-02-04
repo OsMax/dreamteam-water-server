@@ -7,6 +7,7 @@ const waterSchema = new Schema(
   {
     date: { type: Date },
     norm: { type: Number },
+    percent: { type: Number },
     drinks: [
       {
         ml: { type: Number },
