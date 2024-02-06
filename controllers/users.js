@@ -1,6 +1,5 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-// const gravatar = require("gravatar");
 const Jimp = require("jimp");
 const fs = require("fs/promises");
 const path = require("path");
@@ -25,9 +24,6 @@ const register = async (req, res, next) => {
   const { password, email } = req.body;
 
   const hashPassword = await bcrypt.hash(password, 10);
-
-  // const avatarURL = path.join("avatars", "avatarDefault.png");
-  // const avatarURL = gravatar.url(email);
 
   const verificationToken = nanoid();
 
@@ -72,7 +68,6 @@ const login = async (req, res, next) => {
       email: user.email,
       name: user.name,
       gender: user.gender,
-      // norm: user.norm,
       avatarURL: user.avatarURL,
       startDay: user.startDay,
     },
@@ -90,7 +85,6 @@ const logout = async (req, res) => {
 // CURRENT_USER
 // ================================================================================================
 const getCurrent = async (req, res) => {
-  // const { _id, email, name, avatarURL, norm } = req.user;
   const user = req.user;
   res.json({
     user: {
@@ -98,7 +92,6 @@ const getCurrent = async (req, res) => {
       email: user.email,
       name: user.name,
       gender: user.gender,
-      // norm: user.norm,
       avatarURL: user.avatarURL,
       startDay: user.startDay,
     },
@@ -179,12 +172,14 @@ const editUserInfo = async (req, res) => {
   if (keys.length === 0) {
     throw HttpError(400);
   }
-  if (!(await bcrypt.compare(req.body.password, req.user.password))) {
-    throw HttpError(401, "Inalide password");
-  }
   const newUserInfo = req.body;
-  delete newUserInfo.password;
   if (keys.includes("newPassword")) {
+    if (!keys.includes("password") || !req.user.password) {
+      throw HttpError(401, "Current password is empty");
+    }
+    if (!(await bcrypt.compare(req.body.password, req.user.password))) {
+      throw HttpError(401, "Somthing wrong!");
+    }
     const hashPassword = await bcrypt.hash(req.body.newPassword, 10);
     newUserInfo.password = hashPassword;
   }
@@ -212,12 +207,11 @@ const editUserInfo = async (req, res) => {
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
-  getCurrent,
-  logout,
+  getCurrent: ctrlWrapper(getCurrent),
+  logout: ctrlWrapper(logout),
   changeAvatar: ctrlWrapper(changeAvatar),
   verification: ctrlWrapper(verification),
-  reVerification,
-  getUserInfo,
+  reVerification: ctrlWrapper(reVerification),
+  getUserInfo: ctrlWrapper(getUserInfo),
   editUserInfo: ctrlWrapper(editUserInfo),
 };
-//

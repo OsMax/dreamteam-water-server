@@ -3,6 +3,8 @@ const Joi = require("joi");
 
 const MongooseError = require("../helpers/MongoosError");
 
+const GENDERS = ["woman", "man"];
+
 const EMAILREGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 const userSchema = new Schema(
@@ -23,6 +25,7 @@ const userSchema = new Schema(
     },
     gender: {
       type: String,
+      enum: GENDERS,
       default: "woman",
     },
     norm: {
@@ -51,19 +54,34 @@ const userSchema = new Schema(
 );
 
 const authSchema = Joi.object({
-  email: Joi.string().pattern(EMAILREGEX).required(),
+  email: Joi.string().pattern(EMAILREGEX).required().empty(false).messages({
+    "string.base": "The email must be a string.",
+    "any.required": "The email field is required.",
+    "string.empty": "The email must not be empty.",
+    "string.pattern.base": "The email must be in format test@gmail.com.",
+  }),
   password: Joi.string().min(8).max(64).required(),
 }).messages({ "any.required": "missing required {#key} field" });
 
 const reVerifShema = Joi.object({
-  email: Joi.string().pattern(EMAILREGEX).required(),
-}).messages({ "any.required": "missing required field {#key}" });
+  email: Joi.string().pattern(EMAILREGEX).required().empty(false).messages({
+    "string.base": "The email must be a string.",
+    "any.required": "The email field is required.",
+    "string.empty": "The email must not be empty.",
+    "string.pattern.base": "The email must be in format test@gmail.com.",
+  }),
+});
 
 const editUserInfo = Joi.object({
-  name: Joi.string().required(),
-  email: Joi.string().pattern(EMAILREGEX).required(),
-  gender: Joi.string().required(),
-  password: Joi.string().min(8).max(64).required(),
+  name: Joi.string(),
+  email: Joi.string().pattern(EMAILREGEX).required().empty(false).messages({
+    "string.base": "The email must be a string.",
+    "any.required": "The email field is required.",
+    "string.empty": "The email must not be empty.",
+    "string.pattern.base": "The email must be in format test@gmail.com.",
+  }),
+  gender: Joi.string().valid(...GENDERS),
+  password: Joi.string().min(8).max(64),
   newPassword: Joi.string().min(8).max(64),
 }).messages({
   "any.required": "missing required {#key} field",

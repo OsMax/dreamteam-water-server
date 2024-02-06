@@ -16,10 +16,8 @@ const {
 
 const router = express.Router();
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 router.post("/", isValidToken, validateBody(schemas.dateSchema), getDay);
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 router.post(
   "/drinks/:id",
   isValidToken,
@@ -28,7 +26,6 @@ router.post(
   addDrink
 );
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 router.patch(
   "/drinks/:id",
   isValidToken,
@@ -37,10 +34,8 @@ router.patch(
   editDrink
 );
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 router.delete("/drinks/:id", isValidToken, isValidId, deleteDrink);
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 router.post(
   "/month",
   isValidToken,
