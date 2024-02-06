@@ -1,0 +1,8 @@
+services:
+  - name: water
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    environment:
+      - KEY: VALUE
+    cors:
+      origin: "*"
