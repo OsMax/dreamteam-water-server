@@ -173,8 +173,8 @@ const editUserInfo = async (req, res) => {
     throw HttpError(400);
   }
   const newUserInfo = req.body;
-  if (keys.includes("newPassword")) {
-    if (!keys.includes("password") || !req.user.password) {
+  if (req.user.newPassword) {
+    if (!req.user.password) {
       throw HttpError(401, "Current password is empty");
     }
     if (!(await bcrypt.compare(req.body.password, req.user.password))) {
@@ -182,6 +182,8 @@ const editUserInfo = async (req, res) => {
     }
     const hashPassword = await bcrypt.hash(req.body.newPassword, 10);
     newUserInfo.password = hashPassword;
+  } else {
+    delete newUserInfo.password;
   }
   const { _id } = req.user;
   const user = await User.findByIdAndUpdate(
