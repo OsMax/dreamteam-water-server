@@ -40,10 +40,10 @@ const getDay = async (req, res) => {
 // ========================================================================================
 const addDrink = async (req, res) => {
   const { ml, time } = req.body;
-  const { id } = req.params;
+  const { dayId } = req.params;
   const result = await Water.findOneAndUpdate(
     {
-      _id: id,
+      _id: dayId,
     },
     { $push: { drinks: { ml, time } } },
     {

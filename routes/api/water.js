@@ -19,7 +19,7 @@ const router = express.Router();
 router.post("/", isValidToken, validateBody(schemas.dateSchema), getDay);
 
 router.post(
-  "/drinks/:id",
+  "/drinks/:dayId",
   isValidToken,
   isValidId,
   validateBody(schemas.drinkSchema),
