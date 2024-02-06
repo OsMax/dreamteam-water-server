@@ -74,7 +74,7 @@ const reVerifShema = Joi.object({
 
 const editUserInfo = Joi.object({
   name: Joi.string(),
-  email: Joi.string().pattern(EMAILREGEX).required().empty(false).messages({
+  email: Joi.string().pattern(EMAILREGEX).empty(false).messages({
     "string.base": "The email must be a string.",
     "any.required": "The email field is required.",
     "string.empty": "The email must not be empty.",
