@@ -9,8 +9,16 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "consumes": ["application/json", "multipart/form-data", "image/png"],
-  "produces": ["application/json", "multipart/form-data", "image/png"],
+  "consumes": [
+    "application/json",
+    "multipart/form-data",
+    "image/png"
+  ],
+  "produces": [
+    "application/json",
+    "multipart/form-data",
+    "image/png"
+  ],
   "servers": [
     {
       "url": "http://localhost:3000",
@@ -38,7 +46,9 @@
   "paths": {
     "/api/users/register": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Create a new user",
         "parameters": [],
         "requestBody": {
@@ -77,7 +87,9 @@
     },
     "/api/users/login": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "User login",
         "parameters": [],
         "requestBody": {
@@ -116,7 +128,9 @@
     },
     "/api/users/logout": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Log out user",
         "parameters": [],
         "security": [
@@ -139,7 +153,9 @@
     },
     "/api/users/current": {
       "get": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Get information about the current user",
         "parameters": [],
         "security": [
@@ -169,7 +185,9 @@
     },
     "/api/users/avatars": {
       "patch": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Update user avatar",
         "security": [
           {
@@ -220,7 +238,9 @@
     },
     "/api/users/verify/{verificationToken}": {
       "get": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Update user token",
         "parameters": [
           {
@@ -264,7 +284,9 @@
     },
     "/api/users/verify": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Verify user Email",
         "parameters": [],
         "security": [
@@ -285,7 +307,9 @@
                     "description": "User's email"
                   }
                 },
-                "required": ["email"]
+                "required": [
+                  "email"
+                ]
               },
               "example": {
                 "email": "testUser@gmail.com"
@@ -315,7 +339,9 @@
     },
     "/api/users/info": {
       "get": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Get information about the current user",
         "parameters": [],
         "security": [
@@ -343,7 +369,9 @@
         }
       },
       "patch": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Path information about the current user",
         "parameters": [],
         "security": [
@@ -384,7 +412,9 @@
     },
     "/api/water": {
       "post": {
-        "tags": ["Water"],
+        "tags": [
+          "Water"
+        ],
         "summary": "Get information for the specified day",
         "description": "Retrieves water consumption records for the current user for the specified date.",
         "security": [
@@ -405,7 +435,9 @@
                     "description": "The date to retrieve water consumption information for, in ISO format."
                   }
                 },
-                "required": ["date"]
+                "required": [
+                  "date"
+                ]
               },
               "example": {
                 "date": "2023-01-01T00:00:00.000Z"
@@ -443,7 +475,9 @@
     },
     "/api/water/drinks/{id}": {
       "post": {
-        "tags": ["Water"],
+        "tags": [
+          "Water"
+        ],
         "summary": "Add a new drink to the current day",
         "description": "Add a new drink to the current day",
         "security": [
@@ -491,7 +525,9 @@
         }
       },
       "patch": {
-        "tags": ["Water"],
+        "tags": [
+          "Water"
+        ],
         "summary": "Edit an existing drink entry for the current day",
         "description": "Edit details of a specific drink entry.",
         "security": [
@@ -539,7 +575,9 @@
         }
       },
       "delete": {
-        "tags": ["Water"],
+        "tags": [
+          "Water"
+        ],
         "summary": "Delete a specific drink",
         "description": "Deletes a specific drink entry based on the provided ID.",
         "security": [
@@ -578,7 +616,9 @@
     },
     "/api/water/month": {
       "post": {
-        "tags": ["Water"],
+        "tags": [
+          "Water"
+        ],
         "summary": "Get information for the month",
         "description": "Retrieves water consumption records for the specified month for the current user.",
         "security": [
@@ -592,7 +632,10 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["year", "month"],
+                "required": [
+                  "year",
+                  "month"
+                ],
                 "properties": {
                   "year": {
                     "type": "string",
@@ -637,7 +680,9 @@
     },
     "/api/water/norm": {
       "patch": {
-        "tags": ["Water"],
+        "tags": [
+          "Water"
+        ],
         "summary": "Edit the water consumption norm",
         "description": "Updates the daily water consumption norm for the current user.",
         "security": [
@@ -651,7 +696,9 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["norm"],
+                "required": [
+                  "norm"
+                ],
                 "properties": {
                   "date": {
                     "type": "string",
@@ -697,7 +744,10 @@
     "schemas": {
       "authSchema": {
         "type": "object",
-        "required": ["email", "password"],
+        "required": [
+          "email",
+          "password"
+        ],
         "properties": {
           "email": {
             "type": "string",
@@ -762,6 +812,10 @@
               "gender": {
                 "type": "string",
                 "description": "Gender of the user",
+                "enum": [
+                  "woman",
+                  "man"
+                ],
                 "example": "woman"
               },
               "norm": {
@@ -785,36 +839,48 @@
       },
       "responseGetCurrentUser": {
         "type": "object",
-        "required": ["_id", "email", "name", "avatarURL", "norm"],
         "properties": {
-          "n_id": {
-            "type": "string",
-            "example": "65b55865b6b2ac84bc52a78y"
-          },
-          "email": {
-            "type": "string",
-            "example": "testUser@gmail.com"
-          },
-          "name": {
-            "type": "string",
-            "example": "UserFirst"
-          },
-          "gender": {
-            "type": "string",
-            "example": "woman"
-          },
-          "norm": {
-            "type": "string",
-            "example": "2000"
-          },
-          "avatarURL": {
-            "type": "string",
-            "example": "avatars/65b55865b6b2ac84bc52a78f.jpg"
-          },
-          "startDay": {
-            "type": "number",
-            "description": "User's daily norm",
-            "example": null
+          "user": {
+            "type": "object",
+            "required": [
+              "_id",
+              "email",
+              "name",
+              "avatarURL"
+            ],
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "65baa642572064935b2456b6"
+              },
+              "email": {
+                "type": "string",
+                "example": "testUser@gmail.com"
+              },
+              "name": {
+                "type": "string",
+                "example": "UserFirst"
+              },
+              "gender": {
+                "type": "string",
+                "description": "Gender of the user",
+                "enum": [
+                  "woman",
+                  "man"
+                ],
+                "example": "woman"
+              },
+              "avatarURL": {
+                "type": "string",
+                "example": "http://res.cloudinary.com/dykzy8ppw/image/upload/v1707049114/dreamTeamWater/65baa642572064935b245611.png"
+              },
+              "startDay": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The day the user started",
+                "example": "2023-01-01T00:00:00.000Z"
+              }
+            }
           }
         }
       },
@@ -831,7 +897,12 @@
       },
       "responseGetUserInfo": {
         "type": "object",
-        "required": ["_id", "email", "name", "gender"],
+        "required": [
+          "_id",
+          "email",
+          "name",
+          "gender"
+        ],
         "properties": {
           "_id": {
             "type": "string",
@@ -847,13 +918,22 @@
           },
           "gender": {
             "type": "string",
+            "description": "Gender of the user",
+            "enum": [
+              "woman",
+              "man"
+            ],
             "example": "woman"
           }
         }
       },
       "requestUpdateInfoUser": {
         "type": "object",
-        "required": ["name", "email", "gender", "password"],
+        "required": [
+          "name",
+          "email",
+          "gender"
+        ],
         "properties": {
           "name": {
             "type": "string",
@@ -865,25 +945,37 @@
           },
           "gender": {
             "type": "string",
+            "description": "Gender of the user",
+            "enum": [
+              "woman",
+              "man"
+            ],
             "example": "woman"
           },
           "password": {
             "type": "string",
             "minLength": 8,
             "maxLength": 64,
+            "description": "Current password of the user. Required only if changing the password.",
             "example": "test1234"
           },
           "newPassword": {
             "type": "string",
             "minLength": 8,
             "maxLength": 64,
+            "description": "New password for the user. Requires 'password' to be present in the request.",
             "example": "test6789"
           }
         }
       },
       "responseUpdateInfoUser": {
         "type": "object",
-        "required": ["name", "email", "gender", "password"],
+        "required": [
+          "name",
+          "email",
+          "gender",
+          "password"
+        ],
         "properties": {
           "_id": {
             "type": "string",
@@ -899,6 +991,11 @@
           },
           "gender": {
             "type": "string",
+            "description": "Gender of the user",
+            "enum": [
+              "woman",
+              "man"
+            ],
             "example": "woman"
           },
           "norm": {
@@ -1002,7 +1099,10 @@
       },
       "AddDrinkRequest": {
         "type": "object",
-        "required": ["ml", "time"],
+        "required": [
+          "ml",
+          "time"
+        ],
         "properties": {
           "ml": {
             "type": "number",
