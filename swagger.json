@@ -473,7 +473,7 @@
         }
       }
     },
-    "/api/water/drinks/{id}": {
+    "/api/water/drinks/{dayId}": {
       "post": {
         "tags": [
           "Water"
@@ -488,7 +488,7 @@
         "operationId": "addDrink",
         "parameters": [
           {
-            "name": "id",
+            "name": "dayId",
             "in": "path",
             "required": true,
             "description": "ID of the day to add the drink to",
@@ -523,7 +523,9 @@
             "description": "The day not found"
           }
         }
-      },
+      }
+    },
+    "/api/water/drinks/{id}": {
       "patch": {
         "tags": [
           "Water"
@@ -1155,6 +1157,11 @@
                   "type": "string",
                   "description": "Time when the water was drunk",
                   "example": "7:33 AM"
+                },
+                "_id": {
+                  "type": "string",
+                  "description": "ID one drink",
+                  "example": "65b55865b6b2ac84bc52a44y"
                 }
               }
             }
