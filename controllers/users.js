@@ -160,10 +160,10 @@ const reVerification = async (req, res) => {
 
 // GET_INFORMATION
 // ==================================================================================================
-const getUserInfo = async (req, res) => {
-  const { _id, email, name, gender } = req.user;
-  res.status(200).json({ _id, email, name, gender });
-};
+// const getUserInfo = async (req, res) => {
+//   const { _id, email, name, gender } = req.user;
+//   res.status(200).json({ _id, email, name, gender });
+// };
 
 // EDIT_INFORMATION
 // ==================================================================================================
@@ -214,6 +214,6 @@ module.exports = {
   changeAvatar: ctrlWrapper(changeAvatar),
   verification: ctrlWrapper(verification),
   reVerification: ctrlWrapper(reVerification),
-  getUserInfo: ctrlWrapper(getUserInfo),
+  // getUserInfo: ctrlWrapper(getUserInfo),
   editUserInfo: ctrlWrapper(editUserInfo),
 };

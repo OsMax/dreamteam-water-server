@@ -8,7 +8,7 @@ const {
   changeAvatar,
   verification,
   reVerification,
-  getUserInfo,
+  // getUserInfo,
   editUserInfo,
 } = require("../../controllers/users");
 
@@ -34,7 +34,7 @@ router.get("/verify/:verificationToken", verification);
 
 router.post("/verify", validateBody(schema.reVerifShema), reVerification);
 
-router.get("/info", isValidToken, getUserInfo);
+// router.get("/info", isValidToken, getUserInfo);
 
 router.patch(
   "/info",
