@@ -8,8 +8,9 @@ const {
   changeAvatar,
   verification,
   reVerification,
-  // getUserInfo,
   editUserInfo,
+  restorePassword,
+  restoreMail,
 } = require("../../controllers/users");
 
 const { validateBody } = require("../../middlewares/validateBody");
@@ -34,13 +35,19 @@ router.get("/verify/:verificationToken", verification);
 
 router.post("/verify", validateBody(schema.reVerifShema), reVerification);
 
-// router.get("/info", isValidToken, getUserInfo);
-
 router.patch(
   "/info",
   isValidToken,
   validateBody(schema.editUserInfo),
   editUserInfo
+);
+
+router.post("/restore", validateBody(schema.emailSchema), restoreMail);
+
+router.patch(
+  "/restore/:verificationToken",
+  validateBody(schema.passwordSchema),
+  restorePassword
 );
 
 module.exports = router;

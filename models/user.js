@@ -72,6 +72,19 @@ const reVerifShema = Joi.object({
   }),
 });
 
+const emailSchema = Joi.object({
+  email: Joi.string().pattern(EMAILREGEX).required().empty(false).messages({
+    "string.base": "The email must be a string.",
+    "any.required": "The email field is required.",
+    "string.empty": "The email must not be empty.",
+    "string.pattern.base": "The email must be in format test@gmail.com.",
+  }),
+});
+
+const passwordSchema = Joi.object({
+  password: Joi.string().min(8).max(64).required(),
+});
+
 const editUserInfo = Joi.object({
   name: Joi.string(),
   email: Joi.string().pattern(EMAILREGEX).empty(false).messages({
@@ -91,6 +104,8 @@ const schema = {
   authSchema,
   reVerifShema,
   editUserInfo,
+  emailSchema,
+  passwordSchema,
 };
 
 userSchema.post("save", MongooseError);

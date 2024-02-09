@@ -1,9 +1,9 @@
-const { VERIFY_PATH } = process.env;
+const { VERIFY_PATH, FORGOT_PASSWORD_PATH } = process.env;
 
 const emailLetter = (email, verificationToken) => {
   const emailToVetification = {
     to: email,
-    subject: "Contacts service registration",
+    subject: "Water tracker service registration",
     html: ` <div style="text-align: center;">
                     <h1>
                         Hellow!<br/>
@@ -17,4 +17,22 @@ const emailLetter = (email, verificationToken) => {
   return emailToVetification;
 };
 
-module.exports = emailLetter;
+const passwordLetter = (email, verificationToken) => {
+  const emailToPassword = {
+    to: email,
+    subject: "Water tracker service registration",
+    html: ` <div style="text-align: center;">
+                    <h1>
+                        Hellow!<br/>
+	                    It's "Tracker of water"
+                      You forgot your password.
+                    </h1>
+                    <a href="${FORGOT_PASSWORD_PATH}/${verificationToken}"><h2>
+                        Click here to recover it!
+                    </h2></a>
+                </div>`,
+  };
+  return emailToPassword;
+};
+
+module.exports = { emailLetter, passwordLetter };

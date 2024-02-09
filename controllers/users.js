@@ -14,6 +14,7 @@ const {
   HttpError,
   emailSend,
   emailLetter,
+  passwordLetter,
 } = require("../helpers");
 
 const { SECRET_KEY } = process.env;
@@ -158,13 +159,6 @@ const reVerification = async (req, res) => {
   res.status(200).json({ message: "Verification email sent" });
 };
 
-// GET_INFORMATION
-// ==================================================================================================
-// const getUserInfo = async (req, res) => {
-//   const { _id, email, name, gender } = req.user;
-//   res.status(200).json({ _id, email, name, gender });
-// };
-
 // EDIT_INFORMATION
 // ==================================================================================================
 const editUserInfo = async (req, res) => {
@@ -206,6 +200,38 @@ const editUserInfo = async (req, res) => {
   });
 };
 
+// FORGOT PASSWORD EMAIL
+// ==================================================================================================
+const restoreMail = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw HttpError(401, "Wrong email");
+  }
+  const verificationToken = nanoid();
+
+  await User.findOneAndUpdate(email, verificationToken);
+  const emailToPassword = passwordLetter(email, verificationToken);
+  await emailSend(emailToPassword);
+  res.status(201).message({ email });
+};
+
+// RESTORE PASSWORD
+// ==================================================================================================
+const restorePassword = async (req, res) => {
+  const { verificationToken, password } = req.body;
+
+  const user = await User.findOne(verificationToken);
+  if (!user) {
+    throw HttpError(401, "Wrong link");
+  }
+  await User.findByIdAndUpdate(user.id, {
+    verificationToken: null,
+    password: password,
+  });
+  res.status(201).message({ user: { id: user.id, email: user.email } });
+};
+
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
@@ -214,6 +240,7 @@ module.exports = {
   changeAvatar: ctrlWrapper(changeAvatar),
   verification: ctrlWrapper(verification),
   reVerification: ctrlWrapper(reVerification),
-  // getUserInfo: ctrlWrapper(getUserInfo),
   editUserInfo: ctrlWrapper(editUserInfo),
+  restoreMail: ctrlWrapper(restoreMail),
+  restorePassword: ctrlWrapper(restorePassword),
 };
