@@ -204,13 +204,14 @@ const editUserInfo = async (req, res) => {
 // ==================================================================================================
 const restoreMail = async (req, res) => {
   const { email } = req.body;
-  const user = await User.findOne({ email });
+
+  const verificationToken = nanoid();
+  const user = await User.findOneAndUpdate({ email }, { verificationToken });
   if (!user) {
     throw HttpError(401, "Wrong email");
   }
-  const verificationToken = nanoid();
 
-  await User.findOneAndUpdate(email, verificationToken);
+  // await User.findOneAndUpdate(email, verificationToken);
   const emailToPassword = passwordLetter(email, verificationToken);
   await emailSend(emailToPassword);
   res.status(201).json({ email });
@@ -221,14 +222,17 @@ const restoreMail = async (req, res) => {
 const restorePassword = async (req, res) => {
   const { verificationToken, password } = req.body;
 
-  const user = await User.findOne(verificationToken);
+  const user = await User.findOne({ verificationToken });
   if (!user) {
     throw HttpError(401, "Wrong link");
   }
-  await User.findByIdAndUpdate(user.id, {
-    verificationToken: null,
-    password: password,
-  });
+  await User.findByIdAndUpdate(
+    { _id: user.id },
+    {
+      verificationToken: null,
+      password: password,
+    }
+  );
   res.status(201).json({ user: { id: user.id, email: user.email } });
 };
 
