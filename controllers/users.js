@@ -226,11 +226,13 @@ const restorePassword = async (req, res) => {
   if (!user) {
     throw HttpError(401, "Wrong link");
   }
+
+  const hashPassword = await bcrypt.hash(password, 10);
   await User.findByIdAndUpdate(
     { _id: user.id },
     {
       verificationToken: null,
-      password: password,
+      password: hashPassword,
     }
   );
   res.status(201).json({ user: { id: user.id, email: user.email } });
