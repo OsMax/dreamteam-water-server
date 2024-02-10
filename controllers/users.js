@@ -213,14 +213,15 @@ const restoreMail = async (req, res) => {
 
   // await User.findOneAndUpdate(email, verificationToken);
   const emailToPassword = passwordLetter(email, verificationToken);
-  // await emailSend(emailToPassword);
+  await emailSend(emailToPassword);
   res.status(201).json({ email });
 };
 
 // RESTORE PASSWORD
 // ==================================================================================================
 const restorePassword = async (req, res) => {
-  const { verificationToken, password } = req.body;
+  const { verificationToken } = req.params;
+  const { password } = req.body;
 
   const user = await User.findOne({ verificationToken });
   if (!user) {
