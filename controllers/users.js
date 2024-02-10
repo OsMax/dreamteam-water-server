@@ -213,7 +213,7 @@ const restoreMail = async (req, res) => {
 
   // await User.findOneAndUpdate(email, verificationToken);
   const emailToPassword = passwordLetter(email, verificationToken);
-  await emailSend(emailToPassword);
+  // await emailSend(emailToPassword);
   res.status(201).json({ email });
 };
 
