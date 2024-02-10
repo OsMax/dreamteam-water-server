@@ -33,7 +33,7 @@ router.patch("/avatars", isValidToken, upload.single("avatar"), changeAvatar);
 
 router.get("/verify/:verificationToken", verification);
 
-router.post("/verify", validateBody(schema.reVerifShema), reVerification);
+router.post("/verify", validateBody(schema.emailSchema), reVerification);
 
 router.patch(
   "/info",

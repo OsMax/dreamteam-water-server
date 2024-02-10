@@ -213,7 +213,7 @@ const restoreMail = async (req, res) => {
   await User.findOneAndUpdate(email, verificationToken);
   const emailToPassword = passwordLetter(email, verificationToken);
   await emailSend(emailToPassword);
-  res.status(201).message({ email });
+  res.status(201).json({ email });
 };
 
 // RESTORE PASSWORD
@@ -229,7 +229,7 @@ const restorePassword = async (req, res) => {
     verificationToken: null,
     password: password,
   });
-  res.status(201).message({ user: { id: user.id, email: user.email } });
+  res.status(201).json({ user: { id: user.id, email: user.email } });
 };
 
 module.exports = {

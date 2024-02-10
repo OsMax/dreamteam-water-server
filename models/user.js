@@ -63,15 +63,6 @@ const authSchema = Joi.object({
   password: Joi.string().min(8).max(64).required(),
 }).messages({ "any.required": "missing required {#key} field" });
 
-const reVerifShema = Joi.object({
-  email: Joi.string().pattern(EMAILREGEX).required().empty(false).messages({
-    "string.base": "The email must be a string.",
-    "any.required": "The email field is required.",
-    "string.empty": "The email must not be empty.",
-    "string.pattern.base": "The email must be in format test@gmail.com.",
-  }),
-});
-
 const emailSchema = Joi.object({
   email: Joi.string().pattern(EMAILREGEX).required().empty(false).messages({
     "string.base": "The email must be a string.",
@@ -79,10 +70,6 @@ const emailSchema = Joi.object({
     "string.empty": "The email must not be empty.",
     "string.pattern.base": "The email must be in format test@gmail.com.",
   }),
-});
-
-const passwordSchema = Joi.object({
-  password: Joi.string().min(8).max(64).required(),
 });
 
 const editUserInfo = Joi.object({
@@ -100,11 +87,14 @@ const editUserInfo = Joi.object({
   "any.required": "missing required {#key} field",
 });
 
+const passwordSchema = Joi.object({
+  password: Joi.string().min(8).max(64).required(),
+});
+
 const schema = {
   authSchema,
-  reVerifShema,
-  editUserInfo,
   emailSchema,
+  editUserInfo,
   passwordSchema,
 };
 
