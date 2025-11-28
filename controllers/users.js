@@ -22,29 +22,35 @@ const { SECRET_KEY } = process.env;
 // REGISTER
 // ================================================================================================
 const register = async (req, res, next) => {
-  console.log("Try reg");
-
   const { password, email } = req.body;
+  console.log("1");
 
   const hashPassword = await bcrypt.hash(password, 10);
+  console.log("2");
 
   const verificationToken = nanoid();
+  console.log("3");
 
   const emailToVetification = emailLetter(email, verificationToken);
+  console.log("3");
   await emailSend(emailToVetification);
 
+  console.log("4");
   const newUser = await User.create({
     ...req.body,
     password: hashPassword,
     avatarURL: "",
     verificationToken,
   });
+  console.log("5");
   res.status(201).json({
     user: {
       id: newUser.id,
       email: newUser.email,
     },
   });
+
+  console.log("end");
 };
 
 // LOGIN
