@@ -18,6 +18,13 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
+app.get("/", (req, res) => {
+  res.json({
+    status: "ok",
+    service: "DreamTeam Water API",
+    message: "Welcome to DreamTeam water server",
+  });
+});
 
 app.use("/api/water", waterRouter);
 app.use("/api/users", userRouter);
