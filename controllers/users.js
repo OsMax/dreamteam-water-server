@@ -22,6 +22,8 @@ const { SECRET_KEY } = process.env;
 // REGISTER
 // ================================================================================================
 const register = async (req, res, next) => {
+  console.log("0");
+
   const { password, email } = req.body;
   console.log("1");
 
