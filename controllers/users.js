@@ -22,6 +22,8 @@ const { SECRET_KEY } = process.env;
 // REGISTER
 // ================================================================================================
 const register = async (req, res, next) => {
+  console.log("Try reg");
+
   const { password, email } = req.body;
 
   const hashPassword = await bcrypt.hash(password, 10);
