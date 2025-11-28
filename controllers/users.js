@@ -43,8 +43,6 @@ const register = async (req, res, next) => {
       email: newUser.email,
     },
   });
-
-  console.log("end");
 };
 
 // LOGIN

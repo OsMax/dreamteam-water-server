@@ -22,11 +22,9 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const emailSend = async (data) => {
   const email = { ...data };
   try {
-    console.log("start send");
-
     // await transport.sendMail(email);
-    await resend.emails.send(email);
-    console.log("send email");
+    const result = await resend.emails.send(email);
+    console.log(result);
   } catch (e) {
     console.log(e);
   }
