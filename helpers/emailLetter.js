@@ -2,6 +2,7 @@ const { VERIFY_PATH, FORGOT_PASSWORD_PATH } = process.env;
 
 const emailLetter = (email, verificationToken) => {
   const emailToVetification = {
+    from: "Water tracker service",
     to: email,
     subject: "Water tracker service registration",
     html: ` <div style="text-align: center;">
