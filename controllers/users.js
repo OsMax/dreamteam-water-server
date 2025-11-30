@@ -38,12 +38,11 @@ const register = async (req, res, next) => {
     password: hashPassword,
     avatarURL: "",
   });
-  console.log(newUser);
 
   const token = jwt.sign({ id: newUser.id }, SECRET_KEY, { expiresIn: "3d" });
   console.log(token);
 
-  await User.findByIdAndUpdate({ id: newUser.id }, { token });
+  await User.findByIdAndUpdate(newUser.id, { token });
 
   console.log(newUser);
 
