@@ -36,7 +36,6 @@ const register = async (req, res, next) => {
   const newUser = await User.create({
     ...req.body,
     password: hashPassword,
-    token: token,
     avatarURL: "",
   });
   console.log(newUser);
