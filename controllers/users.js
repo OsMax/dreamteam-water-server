@@ -39,6 +39,9 @@ const register = async (req, res, next) => {
     token: token,
     avatarURL: "",
   });
+  const token = jwt.sign(newUser.id, SECRET_KEY, { expiresIn: "3d" });
+
+  await User.findByIdAndUpdate(newUser.id, { token });
 
   console.log(newUser);
 
