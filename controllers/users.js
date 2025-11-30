@@ -31,12 +31,16 @@ const register = async (req, res, next) => {
   // const emailToVetification = emailLetter(email, verificationToken);
   // await emailSend(emailToVetification);
 
+  const token = jwt.sign({ id }, SECRET_KEY, { expiresIn: "3d" });
+
   const newUser = await User.create({
     ...req.body,
     password: hashPassword,
+    token,
     avatarURL: "",
   });
   res.status(201).json({
+    token,
     user: {
       id: newUser.id,
       email: newUser.email,
