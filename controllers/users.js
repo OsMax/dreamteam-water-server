@@ -32,13 +32,17 @@ const register = async (req, res, next) => {
   // await emailSend(emailToVetification);
 
   const token = jwt.sign({ id }, SECRET_KEY, { expiresIn: "3d" });
+  console.log(token);
 
   const newUser = await User.create({
     ...req.body,
     password: hashPassword,
-    token,
+    token: token,
     avatarURL: "",
   });
+
+  console.log(newUser);
+
   res.status(201).json({
     token,
     user: {
