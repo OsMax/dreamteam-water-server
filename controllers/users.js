@@ -26,16 +26,15 @@ const register = async (req, res, next) => {
 
   const hashPassword = await bcrypt.hash(password, 10);
 
-  const verificationToken = nanoid();
+  // const verificationToken = nanoid();
 
-  const emailToVetification = emailLetter(email, verificationToken);
-  await emailSend(emailToVetification);
+  // const emailToVetification = emailLetter(email, verificationToken);
+  // await emailSend(emailToVetification);
 
   const newUser = await User.create({
     ...req.body,
     password: hashPassword,
     avatarURL: "",
-    verificationToken,
   });
   res.status(201).json({
     user: {
