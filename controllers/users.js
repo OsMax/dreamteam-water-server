@@ -44,13 +44,15 @@ const register = async (req, res, next) => {
 
   await User.findByIdAndUpdate(newUser.id, { token });
 
-  console.log(newUser);
-
   res.status(201).json({
     token,
     user: {
-      id: newUser.id,
+      _id: newUser.id,
       email: newUser.email,
+      name: newUser.name,
+      gender: newUser.gender,
+      avatarURL: newUser.avatarURL,
+      startDay: newUser.startDay,
     },
   });
 };
