@@ -31,8 +31,7 @@ const register = async (req, res, next) => {
   // const emailToVetification = emailLetter(email, verificationToken);
   // await emailSend(emailToVetification);
 
-  const token = jwt.sign({ id }, SECRET_KEY, { expiresIn: "3d" });
-  console.log(token);
+  // const token = jwt.sign({ id }, SECRET_KEY, { expiresIn: "3d" });
 
   const newUser = await User.create({
     ...req.body,
