@@ -40,7 +40,6 @@ const register = async (req, res, next) => {
   });
 
   const token = jwt.sign({ id: newUser.id }, SECRET_KEY, { expiresIn: "3d" });
-  console.log(token);
 
   await User.findByIdAndUpdate(newUser.id, { token });
 
